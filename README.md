@@ -1,1 +1,0 @@
-# teachers_front
