@@ -16,18 +16,23 @@ export default defineConfig([
       tseslint.configs.recommended,
       reactHooks.configs['recommended-latest'],
       reactRefresh.configs.vite,
-      prettier, // Добавляем Prettier конфиг
+      prettier, 
     ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
     },
     plugins: {
-      prettier: pluginPrettier, // Добавляем Prettier плагин
+      prettier: pluginPrettier,
     },
     rules: {
-      // Дополнительные правила
-      'prettier/prettier': 'error', // Ошибки при нарушении Prettier правил
+       
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto', 
+        },
+      ], 
       'react-hooks/exhaustive-deps': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',

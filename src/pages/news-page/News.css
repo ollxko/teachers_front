@@ -1,0 +1,77 @@
+.news-сontainer {
+  display: flex;
+  justify-content: center;
+  padding: 20px 20px;
+}
+
+.first-line-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.big-card {
+  width: 400px; 
+  height: 450px; 
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  font-size: 18px;
+  padding: 20px;
+  gap: 10px;
+}
+
+
+.inner-rectangle {
+  width: 360px;
+  height: 260px;
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+  display: flex;
+  border: 1px solid #ccc;
+
+  font-weight: normal;
+  font-size: 16px;
+  color: #666;
+}
+
+.small-cards-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.small-card {
+  width: 400px; 
+  height: 140px; 
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  padding: 12px;
+  font-size: 18px;
+}
+
+
+.small-inner-rectangle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 100px;
+  height: 100px;
+  background-color: #e8e8e8;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  font-weight: normal;
+  font-size: 12px;
+  color: #666;
+}

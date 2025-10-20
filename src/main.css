@@ -1,0 +1,22 @@
+/* src/index.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Или более конкретно */
+html, body, #root {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* Для всех элементов */
+* {
+  font-family: inherit;
+}
