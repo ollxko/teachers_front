@@ -16,7 +16,6 @@
 }
 
 .text-section {
-
   height: 140px;
   display: flex;
   flex-direction: column;
@@ -24,7 +23,7 @@
   padding-right: 16px;
 }
 
-.image-section  {
+.image-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   width: 140px;
   height: 140px;
@@ -32,13 +31,23 @@
   border-radius: 4px;
 }
 
-.time-address-container{
+.time-address-container {
   display: flex;
   font-weight: bolder;
-  color:rgb(102, 102, 102);
-  gap: 150px
+  color: rgb(102, 102, 102);
+  gap: 150px;
 }
 
-.event-name{
+.time-container, .address-container {
+  gap: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.clock-svg, .location-svg{
+  height: 20px;
+}
+
+.event-name {
   font-size: 20px;
 }
