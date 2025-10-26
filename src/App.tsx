@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
-import News from './pages/news-page/News';
-import Courses from './pages/Courses/Courses';
-import Events from './pages/events-page/Events';
+import News from './pages/news-page/news-page';
+import Courses from './pages/courses-page/courses-page';
+import Events from './pages/events-page/events-page';
 
 function App() {
   return (

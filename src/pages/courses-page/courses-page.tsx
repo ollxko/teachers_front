@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import './Courses.css';
+import './courses-page.css';
+import CourseCard from '../../components/CourseCard/CourseCard';
 
 export default function Courses(): JSX.Element {
   const courses = [
@@ -18,13 +19,7 @@ export default function Courses(): JSX.Element {
     <div className='courses-сontainer'>
       <div className='courses-grid'>
         {courses.map(({ id, title, cost }) => (
-          <div key={id} className='course-card'>
-            <div className='course-image'>{/*изображение*/}</div>
-            <div className='course-content'>
-              <div className='course-title'>{title}</div>
-              <p className='course-description'>{cost}</p>
-            </div>
-          </div>
+          <CourseCard id={id} title={title} cost={cost} />
         ))}
       </div>
     </div>

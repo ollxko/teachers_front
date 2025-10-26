@@ -1,5 +1,6 @@
 import { type JSX } from 'react';
-import './Events.css';
+import './events-page.css';
+import EventCard from '../../components/EventCard/EventCard';
 
 export default function Events(): JSX.Element {
   const cardsData = [
@@ -30,20 +31,7 @@ export default function Events(): JSX.Element {
   return (
     <div className='cards-container'>
       {cardsData.map(({ id, title, time, address, image }) => (
-        <div key={id} className='card'>
-          <div className='card-content'>
-            <div className='text-section'>
-              <div className='event-name'>{title}</div>
-              <div className='time-address-container'>
-                <div>{time}</div>
-                <div>{address}</div>
-              </div>
-            </div>
-            <div className='image-section'>
-              <img src={image} />
-            </div>
-          </div>
-        </div>
+        <EventCard id={id} title={title} time={time} address={address} image={image} />
       ))}
     </div>
   );

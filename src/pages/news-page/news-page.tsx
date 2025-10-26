@@ -1,15 +1,12 @@
 import type { JSX } from 'react';
-import './News.css';
+import './news-page.css';
+import BigNewsCard from '../../components/NewsCards/BigNewsCard/BigNewsCard';
 
 export default function News(): JSX.Element {
   return (
     <div className='news-сontainer'>
       <div className='first-line-container'>
-        <div className='big-card'>
-          <div className='inner-rectangle'></div>
-          <div className='title-news'>Новость</div>
-        </div>
-
+        <BigNewsCard title={'Новость'} date={'10.10'} />
         <div className='small-cards-container'>
           <div className='small-card'>
             <div className='title-news'>Новость</div>
