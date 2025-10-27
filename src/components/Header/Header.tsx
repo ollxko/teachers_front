@@ -18,7 +18,9 @@ export default function Header(): JSX.Element {
         </Link>
       </div>
       <div className='profile'>
-        <div className='profile_inner'>Профиль</div>
+        <Link to={'/profile'} className='profile'>
+          Профиль
+        </Link>
       </div>
     </div>
   );

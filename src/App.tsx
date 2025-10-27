@@ -3,6 +3,7 @@ import Header from './components/Header/Header';
 import News from './pages/news-page/news-page';
 import Courses from './pages/courses-page/courses-page';
 import Events from './pages/events-page/events-page';
+import Profile from './pages/profile-page/profile-page';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path={'/news'} element={<News />} />
         <Route path={'/courses'} element={<Courses />} />
         <Route path={'/events'} element={<Events />} />
+        <Route path={'/profile'} element={<Profile name='ФИО' />} />
       </Routes>
     </Router>
   );
