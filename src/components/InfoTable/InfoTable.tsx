@@ -20,9 +20,28 @@ export default function InfoTable({ items, className = '' }: InfoTableProps): JS
             <div className='data-list__title'>{item.title}</div>
             <div className='data-list__data'>{item.data}</div>
           </div>
-          {index < items.length - 1 && <div className='data-list__divider' />}
+          <div className='data-list__divider' />
         </div>
       ))}
     </div>
   );
+}
+
+type InfoTableWithIconProps = {
+  titles: string[];
+  icon: React.ReactNode;
+  className?: string;
+};
+
+export function InfoTableWithIcon({
+  titles,
+  icon,
+  className = '',
+}: InfoTableWithIconProps): JSX.Element {
+  const items: InfoTableItem[] = titles.map(title => ({
+    title,
+    data: icon,
+  }));
+
+  return <InfoTable items={items} className={className} />;
 }
