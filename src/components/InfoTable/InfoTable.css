@@ -1,0 +1,29 @@
+.data-list {
+  width: 400px;
+  background-color: #fff;
+}
+
+.data-list__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+
+}
+
+.data-list__title {
+  color: #666;
+  margin-right: 20px;
+}
+
+.data-list__data {
+  color: #333;
+  text-align: right;
+  flex-grow: 1;
+}
+
+.data-list__divider {
+  height: 0.5px;
+  background-color: #C2C2C2;
+  
+}
