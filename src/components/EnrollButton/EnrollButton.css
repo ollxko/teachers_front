@@ -1,0 +1,79 @@
+.enroll {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.enroll-button {
+    flex: 1;
+    padding: 15px 20px;
+    position: relative;
+    background: linear-gradient(135deg, #10b956 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    overflow: hidden;
+    z-index: 1;
+}
+
+.enroll-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #09b67f 0%, #035c43 100%);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+.enroll-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.enroll-button:hover::before {
+    opacity: 1;
+}
+
+.enroll-button:active {
+    transform: translateY(0);
+}
+
+.enroll-like {
+    width: 60px;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.enroll-like:hover {
+    border-color: #dc3545;
+    transform: scale(1.05);
+}
+
+.enroll-like.liked {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.enroll-like.liked:hover {
+    background: #c82333;
+    border-color: #c82333;
+}

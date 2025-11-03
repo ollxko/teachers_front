@@ -7,6 +7,7 @@ import Profile from './pages/profile-page/profile-page';
 import MainAdmin from './pages/admin/main-admin-page/main-admin-page';
 import NewsItem from './pages/news-item-page/news-item-page';
 import CourseItem from './pages/course-item-page/course-item-page';
+import EventItem from './pages/event-item-page/event-item-page';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path={'/courses'} element={<Courses />} />
         <Route path={'/courses/1'} element={<CourseItem />} />
         <Route path={'/events'} element={<Events />} />
+        <Route path={'/events/1'} element={<EventItem />} />
         <Route path={'/profile'} element={<Profile name='ФИО' />} />
         <Route path={'/admin'} element={<MainAdmin />} />
       </Routes>

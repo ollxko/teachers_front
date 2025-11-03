@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
-import { useState } from 'react';
 import './course-item-page.css';
 import { Link } from 'react-router-dom';
 import Linkify from 'react-linkify';
+import EnrollButton from '../../components/EnrollButton/EnrollButton';
 
 type CourseItemProps = {
   title: string;
@@ -19,12 +19,6 @@ const CourseData: CourseItemProps = {
 };
 
 export default function CourseItem(): JSX.Element {
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
-
   const formatCost = (cost: number): string => {
     return cost.toLocaleString('ru-RU') + ' ₽';
   };
@@ -52,22 +46,7 @@ export default function CourseItem(): JSX.Element {
             </div>
           )}
 
-          <div className='course-actions'>
-            <button className='enroll-button'>Записаться</button>
-
-            <button className={`like-button ${isLiked ? 'liked' : ''}`} onClick={handleLike}>
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill={isLiked ? 'currentColor' : 'none'}
-                stroke='currentColor'
-                strokeWidth='2'
-              >
-                <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z' />
-              </svg>
-            </button>
-          </div>
+          <EnrollButton/>
 
           <div className='course-cost'>{formatCost(CourseData.cost)}</div>
         </div>

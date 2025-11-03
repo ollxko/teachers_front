@@ -63,67 +63,6 @@
     aspect-ratio: 1 / 1; /* Гарантирует квадратную форму */
 }
 
-.course-actions {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-/* Зеленый градиент для кнопки */
-.enroll-button {
-    flex: 1;
-    padding: 15px 20px;
-    background: linear-gradient(135deg, #10b956 0%, #059669 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.enroll-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-}
-
-.enroll-button:active {
-    transform: translateY(0);
-}
-
-.like-button {
-    width: 60px;
-    padding: 15px;
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.like-button:hover {
-    border-color: #dc3545;
-    transform: scale(1.05);
-}
-
-.like-button.liked {
-    background: #dc3545;
-    color: white;
-    border-color: #dc3545;
-}
-
-.like-button.liked:hover {
-    background: #c82333;
-    border-color: #c82333;
-}
-
 /* Цена как простой текст */
 .course-cost {
     font-size: 2rem;
