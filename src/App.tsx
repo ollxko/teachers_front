@@ -13,13 +13,13 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path={'/news'} element={<News />} />
-        <Route path={'/news/1'} element={<NewsItem />} />
-        <Route path={'/courses'} element={<Courses />} />
-        <Route path={'/courses/1'} element={<CourseItem />} />
-        <Route path={'/events'} element={<Events />} />
-        <Route path={'/profile'} element={<Profile name='ФИО' />} />
-        <Route path={'/admin'} element={<MainAdmin />} />
+        <Route path={'news'} element={<News />} />
+        <Route path={'news/1'} element={<NewsItem />} />
+        <Route path={'courses'} element={<Courses />} />
+        <Route path={'courses/1'} element={<CourseItem />} />
+        <Route path={'events'} element={<Events />} />
+        <Route path={'profile'} element={<Profile name='ФИО' />} />
+        <Route path={'admin'} element={<MainAdmin />} />
       </Routes>
     </Router>
   );

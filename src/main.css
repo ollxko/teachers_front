@@ -9,6 +9,7 @@ body {
   font-family: 'Inter', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #DBCFD4;
 }
 
 /* Или более конкретно */
@@ -19,4 +20,9 @@ html, body, #root {
 /* Для всех элементов */
 * {
   font-family: inherit;
+}
+
+h5{
+  font-size: 16px;
+  font-weight: normal;
 }
