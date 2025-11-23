@@ -1,13 +1,30 @@
-.courses-сontainer{
+.courses-page{
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+}
+
+.courses-сontainer{
+  margin-top: 20px;
+  gap: 20px;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 20px;
   width: 100%;
+}
+
+.courses-grid .ant-card{
+  border-radius: 6px ;
+  width: 240px;
+}
+.courses-grid .ant-card-cover > *{
+  border-radius: 6px 6px 0 0 ;
 }

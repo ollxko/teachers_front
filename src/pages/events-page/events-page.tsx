@@ -62,7 +62,7 @@ export default function Events(): JSX.Element {
             open={isCalendarOpen}
             onOpenChange={open => setIsCalendarOpen(open)}
             popupRender={() => calendarContent}
-            size='large'
+            size='middle'
             style={{ width: 300 }}
           >
             <Option key='calendar' value='calendar' style={{ display: 'none' }}>
@@ -73,7 +73,7 @@ export default function Events(): JSX.Element {
           <Search
             placeholder='Введите текст для поиска'
             allowClear
-            size='large'
+            size='middle'
             style={{ width: 300 }}
           />
         </div>
