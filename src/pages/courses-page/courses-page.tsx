@@ -1,6 +1,9 @@
 import type { JSX } from 'react';
 import './courses-page.css';
 import CourseCard from '../../components/CourseCard/CourseCard';
+import { Card, Input } from 'antd';
+const { Meta } = Card;
+const { Search } = Input;
 
 export default function Courses(): JSX.Element {
   const courses = [
@@ -16,11 +19,32 @@ export default function Courses(): JSX.Element {
   ];
 
   return (
-    <div className='courses-сontainer'>
-      <div className='courses-grid'>
-        {courses.map(({ id, title, cost }) => (
-          <CourseCard id={id} title={title} cost={cost} />
-        ))}
+    <div className='courses-page'>
+      <div className='courses-сontainer'>
+        <Search
+          className='search'
+          placeholder='Введите текст для поиска'
+          allowClear
+          size='middle'
+          style={{ width: 300 }}
+        />
+        <div className='courses-grid'>
+          {courses.map(({ id, title, cost }) => (
+            <Card
+              key={id}
+              hoverable
+              cover={
+                <img
+                  draggable={false}
+                  alt='example'
+                  src='https://habrastorage.org/webt/yl/fm/i1/ylfmi1fkdkyqbnkc0tj9szkazwu.jpeg'
+                />
+              }
+            >
+              <Meta title={title} description={cost} />
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
