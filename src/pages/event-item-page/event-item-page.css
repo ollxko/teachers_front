@@ -1,7 +1,23 @@
 .event-item-container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 35px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.event-layout {
+    display: flex;
+    gap: 25px
+}
+
+.event-item-image {
+    width: 350px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 1 / 1;
+    margin-bottom: 12px;
 }
 
 .back-link {
@@ -14,6 +30,10 @@
 
 .back-link:hover {
     text-decoration: underline;
+}
+
+.event-item-content span {
+    font-size: 20px;
 }
 
 .event-item h1 {
@@ -34,7 +54,6 @@
     line-height: 1.6;
     font-size: 20px;
     color: #444;
-    margin-bottom: 30px;
 }
 
 .event-item-container .enroll {
@@ -44,17 +63,22 @@
 .event-item-datetime {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
     margin: 20px 0;
 }
 
 .datetime-item {
     display: flex;
     gap: 8px;
-    font-size: 1rem;
+    /* font-size: 1.5rem; */
+    font-size: 50px;
 }
 
-.datetime-icon {
-    width: 20px;
-    height: 20px;
+.datetime-item span {
+    font-size: 1.1rem;
 }
+
+/* .datetime-icon {
+    width: 30px;
+    height: 30px;
+} */
