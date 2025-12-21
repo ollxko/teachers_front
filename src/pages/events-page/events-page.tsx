@@ -1,15 +1,14 @@
 import { type JSX, useState } from 'react';
 import './events-page.css';
-import { Calendar, Input, Select, Divider } from 'antd';
-import type { Dayjs } from 'dayjs';
+import { Input } from 'antd';
 import EventCard from '../../components/EventCard/EventCard';
+import CalendarSelect from '../../components/CalendarSelect/CalendarSelect';
 
 const { Search } = Input;
-const { Option } = Select;
 
 export default function Events(): JSX.Element {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>('');
+  const [searchText, setSearchText] = useState('');
 
   const cardsData = [
     {
@@ -29,49 +28,22 @@ export default function Events(): JSX.Element {
     },
   ];
 
-  const handleDateSelect = (value: Dayjs) => {
-    setSelectedDate(value.format('DD.MM.YYYY'));
-    setIsCalendarOpen(false);
-  };
-
-  const calendarContent = (
-    <div style={{ padding: '8px 0' }}>
-      <div style={{ padding: '0 12px 8px 12px' }}>
-        <Calendar fullscreen={false} onSelect={handleDateSelect} />
-      </div>
-      <Divider style={{ margin: '8px 0' }} />
-      <div style={{ padding: '0 12px' }}>
-        <a
-          onClick={() => setIsCalendarOpen(false)}
-          style={{ display: 'block', textAlign: 'center' }}
-        >
-          Закрыть
-        </a>
-      </div>
-    </div>
-  );
-
   return (
     <div className='events-page'>
       <div className='events-page-container'>
         <div className='events-title'>События Екатеринбуржского Дома Учителя</div>
         <div className='calendar-search'>
-          <Select
+          <CalendarSelect
+            value={selectedDate}
+            onChange={setSelectedDate}
             placeholder='Выберите дату'
-            value={selectedDate || undefined}
-            open={isCalendarOpen}
-            onOpenChange={open => setIsCalendarOpen(open)}
-            popupRender={() => calendarContent}
-            size='middle'
-            style={{ width: 300 }}
-          >
-            <Option key='calendar' value='calendar' style={{ display: 'none' }}>
-              {selectedDate}
-            </Option>
-          </Select>
+            width={300}
+          />
 
           <Search
             placeholder='Введите текст для поиска'
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
             allowClear
             size='middle'
             style={{ width: 300 }}
