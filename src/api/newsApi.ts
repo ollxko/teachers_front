@@ -24,4 +24,5 @@ export type NewsParams = {
 
 export const newsApi = {
   getNews: (params?: NewsParams) => apiClient.get<NewsResponse>('/posts', { params }),
+  getNewsById: (id: string) => apiClient.get<{ data: NewsItem }>(`/posts/${id}`),
 };

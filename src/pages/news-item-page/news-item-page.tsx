@@ -1,28 +1,32 @@
+// pages/NewsItemPage/NewsItemPage.tsx
 import { type JSX } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Linkify from 'react-linkify';
+import { Typography, Spin, Alert } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import './news-item-page.css';
-import PopupImage from '../../components/PopupImage/PopupImage';
-import { Typography } from 'antd';
+import { useNewsItem } from '../../hooks/useNewsItem';
 
 const { Title, Text } = Typography;
 
-type NewsItemProps = {
-  title: string;
-  content: string;
-  date: string;
-  image?: string;
-};
+export default function NewsItemPage(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const { newsItem, loading, error } = useNewsItem(id);
 
-const NewsData: NewsItemProps = {
-  title: 'Об организации и проведении школьного этапа ВсОШ 25/26',
-  content:
-    'Приказ №451-Д Министерства образования Свердловской области от 04.09.2025 "Об организации и проведении школьного этапа всероссийской олимпиады школьников в Свердловской области в 2025/2026 учебном году"\n\nЕще больше информации о ВСОШ размещается здесь https://domuchitela.profiedu.ru/?section_id=229',
-  date: '15.11.2025',
-  image: '/5472179671505434589.jpg',
-};
+  if (!newsItem) {
+    return (
+      <div className='news-item-page'>
+        <div className='page-header'>
+          <Link to='/news' className='back-button'>
+            <ArrowLeftOutlined /> Назад к новостям
+          </Link>
+        </div>
 
-export default function NewsItem(): JSX.Element {
+        <Alert message='Ошибка' description={error || 'Новость не найдена'} type='error' showIcon />
+      </div>
+    );
+  }
+
   return (
     <div className='page-item-container'>
       <Link to='/news' className='back-link'>
@@ -30,17 +34,13 @@ export default function NewsItem(): JSX.Element {
       </Link>
 
       <article className='news-item'>
-        <Title>{NewsData.title}</Title>
+        <Title>{newsItem.title}</Title>
         <Text type='secondary' className='news-date'>
-          {NewsData.date}
+          {newsItem.date}
         </Text>
-        <div className='news-images'>
-          {NewsData.image && <PopupImage src={NewsData.image} />}
-          {NewsData.image && <PopupImage src={NewsData.image} />}
-        </div>
         <div className='news-item-content'>
           <Linkify>
-            <Text>{NewsData.content}</Text>
+            <Text>{newsItem.content}</Text>
           </Linkify>
         </div>
       </article>

@@ -16,7 +16,7 @@ function App() {
       <Header />
       <Routes>
         <Route path={'news'} element={<News />} />
-        <Route path={'news/1'} element={<NewsItem />} />
+        <Route path={'news/:id'} element={<NewsItem />} />
         <Route path={'courses'} element={<Courses />} />
         <Route path={'courses/1'} element={<CourseItem />} />
         <Route path={'events'} element={<Events />} />

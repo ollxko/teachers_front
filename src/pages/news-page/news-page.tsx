@@ -3,6 +3,7 @@ import './news-page.css';
 import NewsCard from '../../components/NewsCards/NewsCard/NewsCard';
 import { useNews } from '../../hooks/useNews';
 import { formatDate } from '../../utils/dateFormatter';
+import { Link } from 'react-router-dom';
 
 export default function News(): JSX.Element {
   const params = useMemo(
@@ -18,7 +19,9 @@ export default function News(): JSX.Element {
     <div className='news-сontainer'>
       <div className='next-line-container'>
         {news.map(item => (
-          <NewsCard title={item.title} date={formatDate(item.createdAt)} image='' size='medium' />
+          <Link to={`/news/${item.postId}`}>
+            <NewsCard title={item.title} date={formatDate(item.createdAt)} image='' size='medium' />
+          </Link>
         ))}
       </div>
     </div>

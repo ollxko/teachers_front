@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 import './courses-page.css';
-import CourseCard from '../../components/CourseCard/CourseCard';
 import { Card, Input } from 'antd';
 const { Meta } = Card;
 const { Search } = Input;
