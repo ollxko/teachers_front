@@ -1,22 +1,40 @@
 .news-сontainer {
-  display: flex;
-  justify-content: center;
-  padding: 20px 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 30px auto;
+	width: 800px;
+	height: 100%;
+	gap: 20px;
 }
 
 .first-line-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
+	height: 500px;
+	width: 800px;
+	display: flex;
+	gap: 20px;
+}
+
+.big-card-container {
+	height: 100%;
+	width: 100%;
 }
 
 .small-cards-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .title-news{
-    font-weight: bold;
-    font-size: 18px;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.next-line-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }

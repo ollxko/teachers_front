@@ -1,19 +1,24 @@
 import type { JSX } from 'react';
 import './course-item-page.css';
 import { Link } from 'react-router-dom';
+import { Tag, Typography } from 'antd';
 import Linkify from 'react-linkify';
 import EnrollButton from '../../components/EnrollButton/EnrollButton';
 
+const { Title, Text } = Typography;
+
 type CourseItemProps = {
   title: string;
-  content: string;
+  description: string;
+  program: string;
   cost: number;
   image?: string;
 };
 
 const CourseData: CourseItemProps = {
-  title: 'Название курса',
-  content: 'Описание курса',
+  title: 'Использование современных технологий в образовательном процессе',
+  description: 'Знакомство с актуальными инновационными методами и технологиями, соответствующими требованиям нового Федеральной образовательной программы дошкольного образования (ФОП ДО).',
+  program: 'Инновационные практики в контексте реализации ФОП ДО Использование практик развития субъектности у детей дошкольного возраста в деятельности ДОО Личностное развитие ребенка старшего дошкольного возраста в аспекте формирования основ «гибких» навыков Личностно-ориентированная технология, приемы и подходы развития познавательной активности у детей дошкольного возраста Достижение преемственности целей, задач и содержания образования в рамках реализации рабочих программ воспитания ДО и НОО Использование приемов мультипликации в образовательной деятельности Формирование основ финансовой грамотности детей дошкольного возраста Профессиональное совершенствование педагога в системе конкурсного движения: сопровождение и современная практика. Развитие компонентов методической компетентности педагога',
   cost: 5000,
   image: '/5472179671505434589.jpg',
 };
@@ -26,15 +31,20 @@ export default function CourseItem(): JSX.Element {
   return (
     <div className='course-item-container'>
       <Link to='/courses' className='back-link'>
-        ← Назад к списку курсов
+          ← Назад к списку курсов
       </Link>
-
+      
       <div className='course-layout'>
         <div className='course-info'>
           <article className='course-item'>
-            <h1>{CourseData.title}</h1>
+            <Title>{CourseData.title}</Title>
+            <Tag color={"purple"}>{"Онлайн"}</Tag>
+            <Tag color={"blue"}>{"36 часов"}</Tag>
             <div className='course-item-content'>
-              <Linkify>{CourseData.content}</Linkify>
+              <Title level={2}>{"Описание курса"}</Title>
+              <Linkify><Text>{CourseData.description}</Text></Linkify>
+              <Title level={2}>{"Программа курса"}</Title>
+              <Linkify><Text>{CourseData.program}</Text></Linkify>
             </div>
           </article>
         </div>
@@ -48,7 +58,7 @@ export default function CourseItem(): JSX.Element {
 
           <EnrollButton/>
 
-          <div className='course-cost'>{formatCost(CourseData.cost)}</div>
+          <Text className='course-cost'>{formatCost(CourseData.cost)}</Text>
         </div>
       </div>
     </div>

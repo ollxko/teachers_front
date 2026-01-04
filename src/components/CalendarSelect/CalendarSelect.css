@@ -1,0 +1,77 @@
+.calendar-select-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.calendar-wrapper {
+  padding: 8px;
+}
+
+/* Стили для календаря Ant Design */
+.calendar-wrapper .ant-picker-calendar {
+  width: 100% !important;
+}
+
+.calendar-wrapper .ant-picker-calendar .ant-picker-panel {
+  border: none;
+}
+
+.calendar-wrapper .ant-picker-calendar .ant-picker-cell {
+  padding: 2px;
+}
+
+.calendar-wrapper .ant-picker-calendar .ant-picker-cell-inner {
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.calendar-divider {
+  margin: 0;
+}
+
+.calendar-footer {
+  padding: 8px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.close-calendar-link {
+  color: #1890ff;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.close-calendar-link:hover {
+  color: #40a9ff;
+}
+
+/* Для календаря в компактном режиме */
+.calendar-wrapper .ant-picker-calendar-mini {
+  width: 100%;
+}
+
+.calendar-wrapper .ant-picker-calendar-mini .ant-picker-calendar-header {
+  padding: 8px;
+}
+
+.calendar-wrapper .ant-picker-calendar-mini .ant-picker-content th,
+.calendar-wrapper .ant-picker-calendar-mini .ant-picker-content td {
+  padding: 0;
+}
+
+/* Убираем лишние отступы */
+.calendar-wrapper .ant-picker-calendar .ant-picker-calendar-header {
+  padding: 8px;
+}
+
+.calendar-wrapper .ant-picker-calendar .ant-picker-content {
+  width: 100%;
+}
+
+.calendar-wrapper .ant-picker-calendar .ant-picker-cell {
+  height: 24px;
+}
