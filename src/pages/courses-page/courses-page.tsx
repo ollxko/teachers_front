@@ -1,11 +1,14 @@
 import { useMemo, type JSX } from 'react';
 import './courses-page.css';
 import { Card, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { useCourses } from '../../hooks/useCourses';
 const { Meta } = Card;
 const { Search } = Input;
 
 export default function Courses(): JSX.Element {
+  const navigate = useNavigate();
+
   const params = useMemo(
     () => ({
       take: 10,
@@ -28,15 +31,16 @@ export default function Courses(): JSX.Element {
         <div className='courses-grid'>
           {courses.map(course => (
             <Card
-              key={course.courseId}
+              key={course.id}
               hoverable
               cover={
                 <img
                   draggable={false}
-                  alt='example'
+                  alt={course.id}
                   src={course.imageUrl}
                 />
               }
+              onClick={() => navigate(`/courses/${course.id}`)}
             >
               <Meta title={course.name} description={course.price.toString()} />
             </Card>

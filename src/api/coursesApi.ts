@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 
 export type CoursesItem = {
-  courseId: string;
+  id: string;
   name: string;
   description: string;
   link: string;
@@ -25,5 +25,5 @@ export type CoursesParams = {
 
 export const coursesApi = {
   getCourses: (params?: CoursesParams) => apiClient.get<CoursesResponse>('/courses', { params }),
-  getCourseById: (id: string) => apiClient.get<{ data: CoursesItem }>(`/courses/${id}`),
+  getCourseById: (id: string) => apiClient.get<CoursesItem>(`/courses/${id}`),
 };
