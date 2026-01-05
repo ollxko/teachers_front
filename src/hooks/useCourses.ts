@@ -7,7 +7,7 @@ import {
 } from '../api/coursesApi';
 
 export const useCourses = (params?: CoursesParams) => {
-  const [Courses, setCourses] = useState<CoursesItem[]>([]);
+  const [courses, setCourses] = useState<CoursesItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
@@ -30,8 +30,8 @@ export const useCourses = (params?: CoursesParams) => {
         hasMore: data.actualTake >= data.take,
       });
     } catch (err: any) {
-      setError(err.message || 'Ошибка при загрузке новостей');
-      console.error('Failed to fetch Courses:', err);
+      setError(err.message || 'Ошибка при загрузке курсов');
+      console.error('Failed to fetch courses:', err);
     } finally {
       setLoading(false);
     }
@@ -41,5 +41,5 @@ export const useCourses = (params?: CoursesParams) => {
     fetchCourses();
   }, [fetchCourses]);
 
-  return { Courses, loading, error };
+  return { courses, loading, error };
 };
