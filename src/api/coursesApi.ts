@@ -1,11 +1,13 @@
 import apiClient from './apiClient';
 
 export type CoursesItem = {
-  courseId: string;
-  title: string;
+  id: string;
+  name: string;
   description: string;
   link: string;
   createdAt: string;
+  imageUrl: string;
+  price: number;
 };
 
 export type CoursesResponse = {
@@ -22,6 +24,6 @@ export type CoursesParams = {
 };
 
 export const coursesApi = {
-  getCourses: (params?: CoursesParams) => apiClient.get<CoursesResponse>('/posts', { params }),
-  getCoursesById: (id: string) => apiClient.get<{ data: CoursesItem }>(`/posts/${id}`),
+  getCourses: (params?: CoursesParams) => apiClient.get<CoursesResponse>('/courses', { params }),
+  getCourseById: (id: string) => apiClient.get<CoursesItem>(`/courses/${id}`),
 };
