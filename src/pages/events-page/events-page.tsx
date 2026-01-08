@@ -3,6 +3,10 @@ import './events-page.css';
 import { Input } from 'antd';
 import EventCard from '../../components/EventCard/EventCard';
 import CalendarSelect from '../../components/CalendarSelect/CalendarSelect';
+import { useMemo } from 'react';
+import { useEvents } from '../../hooks/useEvents';
+import { formatDate } from '../../utils/dateFormatter';
+import { formatTime } from '../../utils/timeFormatter';
 
 const { Search } = Input;
 
@@ -10,23 +14,14 @@ export default function Events(): JSX.Element {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [searchText, setSearchText] = useState('');
 
-  const cardsData = [
-    {
-      id: 1,
-      title:
-        'Приглашаем вас на открытые уроки народной артистки РФ Марины Мещеряковой с 17-22 ноября в зал Российского фонда культуры.С 17 — 22 ноября народная артистка РФ, оперная певица с мировым именем, проведёт открытые уроки для молодых профессиональных музыкантов, успешно прошедших отбор для участия.',
-      time: '14:00',
-      address: 'МАОУ СОШ 100',
-      image: 'https://img-fotki.yandex.ru/get/55231/129367479.254/0_13ed59_bd9ed3d8_X4L.jpg',
-    },
-    {
-      id: 2,
-      title: 'Cобытие 1',
-      time: '14:00',
-      address: 'МАОУ СОШ 100',
-      image: 'https://img-fotki.yandex.ru/get/55231/129367479.254/0_13ed59_bd9ed3d8_X4L.jpg',
-    },
-  ];
+  const params = useMemo(
+    () => ({
+      take: 10,
+    }),
+    []
+  );
+
+  const { events, loading, error } = useEvents(params);
 
   return (
     <div className='events-page'>
@@ -50,8 +45,16 @@ export default function Events(): JSX.Element {
           />
         </div>
         <div className='event-cards-container'>
-          {cardsData.map(({ id, title, time, address, image }) => (
-            <EventCard key={id} image={image} title={title} tag={'Онлайн'} />
+          {events.map(event => (
+            <EventCard
+              key={event.eventId}
+              image={event.imageUrl}
+              title={event.name}
+              tag={event.type}
+              date={formatDate(event.date)}
+              time={formatTime(event.date)}
+              address={event.address}
+            />
           ))}
         </div>
       </div>
