@@ -4,7 +4,7 @@ import { Input } from 'antd';
 import EventCard from '../../components/EventCard/EventCard';
 import CalendarSelect from '../../components/CalendarSelect/CalendarSelect';
 import { useMemo } from 'react';
-import { useEvents } from '../../hooks/useEvents';
+import { useEvents } from '../../hooks/Events/useEvents';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
 

@@ -3,7 +3,7 @@ import {
   coursesApi,
   type CoursesItem
 
-} from '../api/coursesApi';
+} from '../../api/coursesApi';
 
 export const useCourseItem = (id: string | undefined) => {
   const [coursesItem, setCourseItem] = useState<CoursesItem>();

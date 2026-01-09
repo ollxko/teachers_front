@@ -2,7 +2,7 @@ import { useMemo, type JSX } from 'react';
 import './courses-page.css';
 import { Card, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useCourses } from '../../hooks/useCourses';
+import { useCourses } from '../../hooks/Courses/useCourses';
 const { Meta } = Card;
 const { Search } = Input;
 

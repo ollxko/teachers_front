@@ -11,15 +11,9 @@ import {
   BoldItalicUnderlineToggles,
   CodeToggle,
   ListsToggle,
-  CreateLink,
-  InsertImage,
   InsertTable,
-  InsertCodeBlock,
   BlockTypeSelect,
-  linkDialogPlugin,
-  imagePlugin,
   tablePlugin,
-  codeBlockPlugin,
   diffSourcePlugin,
   DiffSourceToggleWrapper,
   type MDXEditorMethods,
@@ -65,15 +59,7 @@ export const MdxEditorComponent: React.FC<MdxEditorComponentProps> = ({
           quotePlugin(),
           thematicBreakPlugin(),
           markdownShortcutPlugin(),
-          linkDialogPlugin(),
-          imagePlugin({
-            imageUploadHandler: async () => {
-              return 'https://via.placeholder.com/150';
-            },
-            imageAutocompleteSuggestions: ['https://via.placeholder.com/150'],
-          }),
           tablePlugin(),
-          codeBlockPlugin({ defaultCodeBlockLanguage: 'javascript' }),
           diffSourcePlugin({ viewMode: 'rich-text' }),
           toolbarPlugin({
             toolbarContents: () => (
@@ -83,10 +69,7 @@ export const MdxEditorComponent: React.FC<MdxEditorComponentProps> = ({
                   <BoldItalicUnderlineToggles />
                   <CodeToggle />
                   <ListsToggle />
-                  <CreateLink />
-                  <InsertImage />
                   <InsertTable />
-                  <InsertCodeBlock />
                   <BlockTypeSelect />
                 </DiffSourceToggleWrapper>
               </>

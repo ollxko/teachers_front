@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Tag, Typography } from 'antd';
 import Linkify from 'react-linkify';
 import EnrollButton from '../../components/EnrollButton/EnrollButton';
-import { useCourseItem } from '../../hooks/useCourseItem';
+import { useCourseItem } from '../../hooks/Courses/useCourseItem';
 
 const { Title, Text } = Typography;
 
