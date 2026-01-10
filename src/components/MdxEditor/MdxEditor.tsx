@@ -11,15 +11,9 @@ import {
   BoldItalicUnderlineToggles,
   CodeToggle,
   ListsToggle,
-  CreateLink,
-  InsertImage,
   InsertTable,
-  InsertCodeBlock,
   BlockTypeSelect,
-  linkDialogPlugin,
-  imagePlugin,
   tablePlugin,
-  codeBlockPlugin,
   diffSourcePlugin,
   DiffSourceToggleWrapper,
   type MDXEditorMethods,
@@ -51,42 +45,6 @@ export const MdxEditorComponent = memo(
       [onMarkdownChange]
     );
 
-    const plugins = useMemo(
-      () => [
-        headingsPlugin(),
-        listsPlugin(),
-        quotePlugin(),
-        thematicBreakPlugin(),
-        markdownShortcutPlugin(),
-        linkDialogPlugin(),
-        imagePlugin({
-          imageUploadHandler: async () => {
-            return 'https://via.placeholder.com/150';
-          },
-          imageAutocompleteSuggestions: ['https://via.placeholder.com/150'],
-        }),
-        tablePlugin(),
-        codeBlockPlugin({ defaultCodeBlockLanguage: 'javascript' }),
-        diffSourcePlugin({ viewMode: 'rich-text' }),
-        toolbarPlugin({
-          toolbarContents: () => (
-            <DiffSourceToggleWrapper>
-              <UndoRedo />
-              <BoldItalicUnderlineToggles />
-              <CodeToggle />
-              <ListsToggle />
-              <CreateLink />
-              <InsertImage />
-              <InsertTable />
-              <InsertCodeBlock />
-              <BlockTypeSelect />
-            </DiffSourceToggleWrapper>
-          ),
-        }),
-      ],
-      []
-    );
-
     return (
       <div className={`editor-wrapper ${className}`}>
         <MDXEditor
@@ -96,7 +54,29 @@ export const MdxEditorComponent = memo(
           className='custom-mdx-editor'
           contentEditableClassName='custom-content-editable'
           readOnly={readOnly}
-          plugins={plugins}
+          plugins={[
+            headingsPlugin(),
+            listsPlugin(),
+            quotePlugin(),
+            thematicBreakPlugin(),
+            markdownShortcutPlugin(),
+            tablePlugin(),
+            diffSourcePlugin({ viewMode: 'rich-text' }),
+            toolbarPlugin({
+              toolbarContents: () => (
+                <>
+                  <DiffSourceToggleWrapper>
+                    <UndoRedo />
+                    <BoldItalicUnderlineToggles />
+                    <CodeToggle />
+                    <ListsToggle />
+                    <InsertTable />
+                    <BlockTypeSelect />
+                  </DiffSourceToggleWrapper>
+                </>
+              ),
+            }),
+          ]}
         />
       </div>
     );

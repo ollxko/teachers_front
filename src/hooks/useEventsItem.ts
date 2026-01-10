@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { eventsApi, type EventsItem } from '../api/eventsApi';
+import { eventsApi, type GetEventResponse } from '../api/eventsApi';
 
 export const useEventItem = (id: string | undefined) => {
-  const [eventsItem, setEventItem] = useState<EventsItem>();
+  const [eventsItem, setEventItem] = useState<GetEventResponse>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ export const useEventItem = (id: string | undefined) => {
       setLoading(true);
       setError(null);
 
-      const response = await eventsApi.getEventById(eventId);
+      const response = await eventsApi.getEventsById(eventId);
 
       if (response.data) {
         setEventItem(response.data);

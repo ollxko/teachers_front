@@ -1,22 +1,23 @@
 import apiClient from './apiClient';
+import type { PagedResult } from './pagedResult';
 
-export type EventsItem = {
+export type GetEventResponse = {
   id: string;
   name: string;
-  type: string;
-  date: string;
   description: string;
+  date: string;
+  eventType: string;
   address: string;
   imageUrl: string;
 };
 
-export type EventsResponse = {
-  take: number;
-  orderFieldName: string;
-  orderType: string;
-  cursorType: string;
-  items: EventsItem[];
-  actualTake: number;
+export type AddEventRequest = {
+  name: string;
+  description: string;
+  type: number;
+  date: string;
+  address: string;
+  imageBase64: string;
 };
 
 export type EventsParams = {
@@ -24,6 +25,8 @@ export type EventsParams = {
 };
 
 export const eventsApi = {
-  getEvents: (params?: EventsParams) => apiClient.get<EventsResponse>('/events', { params }),
-  getEventById: (id: string) => apiClient.get<EventsItem>(`/events/${id}`),
+  getEvents: (params?: EventsParams) =>
+    apiClient.get<PagedResult<GetEventResponse>>('/events', { params }),
+  getEventsById: (id: string) => apiClient.get<GetEventResponse>(`/events/${id}`),
+  addEvent: (data: AddEventRequest) => apiClient.post<GetEventResponse>('/events', { data }),
 };

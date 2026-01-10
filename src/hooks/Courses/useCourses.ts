@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  eventsApi,
-  type EventsItem,
-  type EventsParams,
-  type EventsResponse,
-} from '../api/eventsApi';
+  coursesApi,
+  type CoursesItem,
+  type CoursesParams,
+  type CoursesResponse,
+} from '../../api/coursesApi';
 
-export const useEvents = (params?: EventsParams) => {
-  const [events, setEvents] = useState<EventsItem[]>([]);
+export const useCourses = (params?: CoursesParams) => {
+  const [courses, setCourses] = useState<CoursesItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
@@ -16,30 +16,30 @@ export const useEvents = (params?: EventsParams) => {
     hasMore: true,
   });
 
-  const fetchEvent = useCallback(async () => {
+  const fetchCourses = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await eventsApi.getEvents(params);
+      const response = await coursesApi.getCourses(params);
       const data = response.data;
 
-      setEvents(data.items);
+      setCourses(data.items);
       setPagination({
         take: data.take,
         actualTake: data.actualTake,
         hasMore: data.actualTake >= data.take,
       });
     } catch (err: any) {
-      setError(err.message || 'Ошибка при загрузке новостей');
-      console.error('Failed to fetch event:', err);
+      setError(err.message || 'Ошибка при загрузке курсов');
+      console.error('Failed to fetch courses:', err);
     } finally {
       setLoading(false);
     }
   }, [params]);
 
   useEffect(() => {
-    fetchEvent();
-  }, [fetchEvent]);
+    fetchCourses();
+  }, [fetchCourses]);
 
-  return { events, loading, error };
+  return { courses, loading, error };
 };
