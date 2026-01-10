@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { useEvents } from '../../hooks/useEvents';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
+import { Link } from 'react-router-dom';
 
 const { Search } = Input;
 
@@ -46,15 +47,17 @@ export default function Events(): JSX.Element {
         </div>
         <div className='event-cards-container'>
           {events.map(event => (
-            <EventCard
-              key={event.eventId}
-              image={event.imageUrl}
-              title={event.name}
-              tag={event.type}
-              date={formatDate(event.date)}
-              time={formatTime(event.date)}
-              address={event.address}
-            />
+            <Link to={`/events/${event.id}`}>
+              <EventCard
+                key={event.id}
+                image={event.imageUrl}
+                title={event.name}
+                tag={event.type}
+                date={formatDate(event.date)}
+                time={formatTime(event.date)}
+                address={event.address}
+              />
+            </Link>
           ))}
         </div>
       </div>

@@ -6,7 +6,7 @@ import CalendarSelect from '../../components/CalendarSelect/CalendarSelect';
 import { MdxEditorComponent } from '../../components/MdxEditor/MdxEditor';
 import './main-admin-page.css';
 
-export function MainPage() {
+export default function MainAdminPage() {
   const [markdown, setMarkdown] = useState('# Hello world');
   const [status, setStatus] = useState('online');
   const [selectedDate, setSelectedDate] = useState<string>('');

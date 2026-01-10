@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 
 export type EventsItem = {
-  eventId: string;
+  id: string;
   name: string;
   type: string;
   date: string;
@@ -25,5 +25,5 @@ export type EventsParams = {
 
 export const eventsApi = {
   getEvents: (params?: EventsParams) => apiClient.get<EventsResponse>('/events', { params }),
-  getEventsById: (id: string) => apiClient.get<{ data: EventsItem }>(`/events/${id}`),
+  getEventById: (id: string) => apiClient.get<EventsItem>(`/events/${id}`),
 };

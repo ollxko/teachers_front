@@ -33,13 +33,7 @@ export default function Courses(): JSX.Element {
             <Card
               key={course.id}
               hoverable
-              cover={
-                <img
-                  draggable={false}
-                  alt={course.id}
-                  src={course.imageUrl}
-                />
-              }
+              cover={<img draggable={false} alt={course.id} src={course.imageUrl} />}
               onClick={() => navigate(`/courses/${course.id}`)}
             >
               <Meta title={course.name} description={course.price.toString()} />

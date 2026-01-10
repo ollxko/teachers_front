@@ -22,18 +22,20 @@ export default function CourseItem(): JSX.Element {
   return (
     <div className='course-item-container'>
       <Link to='/courses' className='back-link'>
-          ← Назад к списку курсов
+        ← Назад к списку курсов
       </Link>
-      
+
       <div className='course-layout'>
         <div className='course-info'>
           <article className='course-item'>
             <Title>{coursesItem?.name}</Title>
-            <Tag color={"purple"}>{"Онлайн"}</Tag>
-            <Tag color={"blue"}>{"36 часов"}</Tag>
+            <Tag color={'purple'}>{'Онлайн'}</Tag>
+            <Tag color={'blue'}>{'36 часов'}</Tag>
             <div className='course-item-content'>
-              <Title level={2}>{"Описание курса"}</Title>
-              <Linkify><Text>{coursesItem?.description}</Text></Linkify>
+              <Title level={2}>{'Описание курса'}</Title>
+              <Linkify>
+                <Text>{coursesItem?.description}</Text>
+              </Linkify>
             </div>
           </article>
         </div>
@@ -41,11 +43,15 @@ export default function CourseItem(): JSX.Element {
         <div className='course-sidebar'>
           {coursesItem?.imageUrl && (
             <div className='course-image-container'>
-              <img src={coursesItem.imageUrl} alt={coursesItem?.name} className='course-item-image' />
+              <img
+                src={coursesItem.imageUrl}
+                alt={coursesItem?.name}
+                className='course-item-image'
+              />
             </div>
           )}
 
-          <EnrollButton/>
+          <EnrollButton />
 
           <Text className='course-cost'>{formatCost(coursesItem?.price)}</Text>
         </div>

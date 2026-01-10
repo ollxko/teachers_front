@@ -4,7 +4,7 @@ import {
   type EventsItem,
   type EventsParams,
   type EventsResponse,
-} from '../api/eventApi';
+} from '../api/eventsApi';
 
 export const useEvents = (params?: EventsParams) => {
   const [events, setEvents] = useState<EventsItem[]>([]);
