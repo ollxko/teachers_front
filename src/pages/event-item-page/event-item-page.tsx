@@ -3,7 +3,7 @@ import './event-item-page.css';
 import { Link, useParams } from 'react-router-dom';
 import { Tag, Typography } from 'antd';
 import Linkify from 'react-linkify';
-import EnrollButton from '../../components/EnrollButton/EnrollButton';
+import Button from '../../components/Button/Button';
 import { CalendarOutlined, FieldTimeOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { useEventItem } from '../../hooks/useEventsItem';
 import { formatDate } from '../../utils/dateFormatter';
@@ -95,7 +95,7 @@ export default function EventItem(): JSX.Element {
             </div>
           )}
 
-          <EnrollButton />
+          <Button text='Записаться' />
         </div>
       </div>
     </div>

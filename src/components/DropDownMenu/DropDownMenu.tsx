@@ -1,4 +1,3 @@
-// components/UserMenuDropdown/UserMenuDropdown.tsx
 import React, { useState } from 'react';
 import { Dropdown, Button, Menu, Space } from 'antd';
 import { DownOutlined, UserOutlined, StarOutlined, LogoutOutlined } from '@ant-design/icons';
@@ -19,19 +18,16 @@ const UserMenuDropdown: React.FC = () => {
 
     if (e.key === 'logout') {
       console.log('Выход из системы');
-      // Здесь логика выхода (очистка токена, редирект и т.д.)
     }
   };
 
   const handleEditData = () => {
     console.log('Редактировать данные');
-    // Навигация на страницу редактирования данных
     navigate('/profile/edit');
   };
 
   const handleChangePassword = () => {
     console.log('Поменять пароль');
-    // Навигация на страницу смены пароля
     navigate('/profile/password');
   };
 
@@ -46,14 +42,6 @@ const UserMenuDropdown: React.FC = () => {
           style={{ display: 'block', color: 'inherit', textDecoration: 'none' }}
         >
           Мои курсы и события
-        </Link>
-      </Menu.Item>
-      <Menu.Item key='favorites' icon={<StarOutlined />}>
-        <Link
-          to='/favorites'
-          style={{ display: 'block', color: 'inherit', textDecoration: 'none' }}
-        >
-          Избранное
         </Link>
       </Menu.Item>
       <Menu.Divider />

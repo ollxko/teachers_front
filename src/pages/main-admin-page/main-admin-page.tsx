@@ -21,7 +21,7 @@ import './main-admin-page.css';
 import type { AddEventRequest } from '../../api/eventsApi';
 import { useAddEvent } from '../../hooks/Events/useAddEvent';
 
-export function MainPage(): JSX.Element {
+export default function MainPage(): JSX.Element {
   const [markdown, setMarkdown] = useState('# Hello world');
   const [status, setStatus] = useState('online');
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -34,11 +34,8 @@ export function MainPage(): JSX.Element {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
-
-  // Используем хук правильно
   const { addEvent, result, loading, error } = useAddEvent();
 
-  // Обработка результата
   useEffect(() => {
     if (result) {
       message.success('Событие успешно создано!');

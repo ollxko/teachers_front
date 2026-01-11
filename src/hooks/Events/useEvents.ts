@@ -1,14 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  eventsApi,
-  type GetEventResponse,
-  type EventsParams,
-<<<<<<< HEAD:src/hooks/useEvents.ts
-  type EventsResponse,
-} from '../api/eventsApi';
-=======
-} from '../../api/eventApi';
->>>>>>> 657014a5c1791dee9b7d687123e1cbc9b27669bb:src/hooks/Events/useEvents.ts
+import { eventsApi, type GetEventResponse, type EventsParams } from '../../api/eventsApi';
 
 export const useEvents = (params?: EventsParams) => {
   const [events, setEvents] = useState<GetEventResponse[]>([]);

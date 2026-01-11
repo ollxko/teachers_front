@@ -1,8 +1,5 @@
 import { useState, useCallback } from 'react';
-import {
-  eventsApi,
-  type AddEventRequest,
-} from '../../api/eventApi';
+import { eventsApi, type AddEventRequest } from '../../api/eventsApi';
 
 export const useAddEvent = () => {
   const [result, setResult] = useState<boolean>(false);
@@ -22,7 +19,6 @@ export const useAddEvent = () => {
         return true;
       }
       return false;
-
     } catch (err: any) {
       setError(err.message || 'Ошибка при создании события');
       return false;
@@ -33,4 +29,3 @@ export const useAddEvent = () => {
 
   return { addEvent, result, loading, error };
 };
-

@@ -1,7 +1,6 @@
-// components/ProfilePopup/ProfilePopup.tsx
 import React from 'react';
-import { Modal, Typography, Avatar, Button } from 'antd';
-import { UserOutlined, EditOutlined, LockOutlined } from '@ant-design/icons';
+import { Modal, Typography, Button } from 'antd';
+import { EditOutlined, LockOutlined } from '@ant-design/icons';
 import './PopUpProfile.css';
 
 const { Title, Text } = Typography;
@@ -44,12 +43,10 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({
       className='profile-popup-modal'
     >
       <div className='profile-popup-content'>
-        {/* Заголовок Профиль */}
         <Title level={4} className='profile-popup-title'>
           Профиль
         </Title>
 
-        {/* Информация о пользователе */}
         <div className='profile-popup-info'>
           <div className='profile-popup-info-item'>
             <Text type='secondary' className='profile-popup-info-label'>
@@ -66,7 +63,6 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({
           </div>
         </div>
 
-        {/* Кнопки действий */}
         <div className='profile-popup-actions'>
           <Button
             type='primary'

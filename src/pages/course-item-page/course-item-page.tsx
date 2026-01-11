@@ -3,7 +3,7 @@ import './course-item-page.css';
 import { Link, useParams } from 'react-router-dom';
 import { Tag, Typography } from 'antd';
 import Linkify from 'react-linkify';
-import EnrollButton from '../../components/EnrollButton/EnrollButton';
+import Button from '../../components/Button/Button';
 import { useCourseItem } from '../../hooks/Courses/useCourseItem';
 
 const { Title, Text } = Typography;
@@ -51,7 +51,7 @@ export default function CourseItem(): JSX.Element {
             </div>
           )}
 
-          <EnrollButton />
+          <Button text='Записаться' />
 
           <Text className='course-cost'>{formatCost(coursesItem?.price)}</Text>
         </div>
