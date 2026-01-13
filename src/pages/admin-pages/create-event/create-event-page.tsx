@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, type JSX, useEffect } from 'react';
+import { useState, useCallback, type JSX, useEffect } from 'react';
 import {
   Radio,
   Input,
@@ -12,20 +12,18 @@ import {
   Spin,
   Typography,
 } from 'antd';
-import { CloudUploadOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import CalendarSelect from '../../components/CalendarSelect/CalendarSelect';
-import { MdxEditorComponent } from '../../components/MdxEditor/MdxEditor';
-import './main-admin-page.css';
-import type { AddEventRequest } from '../../api/eventsApi';
-import { useAddEvent } from '../../hooks/Events/useAddEvent';
+import CalendarSelect from '../../../components/CalendarSelect/CalendarSelect';
+import { MdxEditorComponent } from '../../../components/MdxEditor/MdxEditor';
+import './create-event-page.css';
+import type { AddEventRequest } from '../../../api/eventsApi';
+import { useAddEvent } from '../../../hooks/Events/useAddEvent';
+import { ImageUpload } from '../../../components/ImageUploader/ImageUploader';
 
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
-export default function MainPage(): JSX.Element {
-  const [markdown, setMarkdown] = useState('# Hello world');
+export default function CreateEventPage(): JSX.Element {
+  const [markdown, setMarkdown] = useState('');
   const [status, setStatus] = useState('online');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [address, setAddress] = useState('');
@@ -33,9 +31,6 @@ export default function MainPage(): JSX.Element {
   const [eventName, setEventName] = useState('');
 
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -61,56 +56,6 @@ export default function MainPage(): JSX.Element {
   const handleMarkdownChange = useCallback((newMarkdown: string) => {
     setMarkdown(newMarkdown);
   }, []);
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      console.log(file.type);
-      messageApi.error('Пожалуйста, выберите файл изображения (JPEG, JPG, PNG)', 5);
-      return;
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-      const maxSizeMB = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(0);
-      messageApi.error(
-        `Файл слишком большой! Размер файла: ${fileSizeMB}MB. Максимальный размер: ${maxSizeMB}MB`,
-        5
-      );
-      return;
-    }
-
-    setIsUploading(true);
-
-    const reader = new FileReader();
-
-    reader.onload = e => {
-      const base64 = e.target?.result as string;
-      setUploadedImage(base64);
-      setIsUploading(false);
-    };
-
-    reader.onerror = () => {
-      messageApi.error('Ошибка при чтении файла', 5);
-      setIsUploading(false);
-    };
-
-    reader.readAsDataURL(file);
-  };
-
-  const handleRemoveImage = () => {
-    setUploadedImage(null);
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
 
   const handleSave = async () => {
     const dateObj = dayjs(selectedDate, 'DD.MM.YYYY');
@@ -222,64 +167,7 @@ export default function MainPage(): JSX.Element {
           </Col>
 
           <Col xs={24} md={8}>
-            <div className={`image-upload-container ${uploadedImage ? 'has-image' : ''}`}>
-              <input
-                type='file'
-                ref={fileInputRef}
-                onChange={handleImageUpload}
-                accept='image/*'
-                className='file-input'
-              />
-
-              {isUploading ? (
-                <Spin tip='Загрузка изображения...' size='large'>
-                  <div className='spin-container' />
-                </Spin>
-              ) : uploadedImage ? (
-                <div className='image-preview-container'>
-                  <div className='image-preview-wrapper'>
-                    <img src={uploadedImage} alt='Uploaded preview' className='image-preview' />
-                  </div>
-
-                  <Space>
-                    <Button
-                      type='primary'
-                      icon={<UploadOutlined />}
-                      onClick={triggerFileInput}
-                      size='small'
-                    >
-                      Заменить
-                    </Button>
-                    <Button
-                      danger
-                      icon={<DeleteOutlined />}
-                      onClick={handleRemoveImage}
-                      size='small'
-                    >
-                      Удалить
-                    </Button>
-                  </Space>
-                </div>
-              ) : (
-                <div>
-                  <div className='upload-icon-wrapper'>
-                    <UploadOutlined className='upload-icon-large' />
-                  </div>
-
-                  <div className='upload-button-wrapper'>
-                    <Button type='primary' icon={<UploadOutlined />} onClick={triggerFileInput}>
-                      Выбрать файл
-                    </Button>
-                  </div>
-
-                  <Typography.Text type='secondary' className='upload-hint'>
-                    Поддерживаемые форматы: JPEG, JPG, PNG
-                    <br />
-                    Максимальный размер: 5MB
-                  </Typography.Text>
-                </div>
-              )}
-            </div>
+            <ImageUpload uploadedImage={uploadedImage} setUploadedImage={setUploadedImage} />
           </Col>
         </Row>
       </Card>

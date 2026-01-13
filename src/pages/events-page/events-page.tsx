@@ -8,6 +8,9 @@ import { useEvents } from '../../hooks/Events/useEvents';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
 import { Link } from 'react-router-dom';
+import { RequireAuth } from '../../components/RequireAuth/RequireAuth';
+import { RequireRole } from '../../components/RequireRole/RequireRole';
+import Button from '../../components/Button/Button';
 
 const { Search } = Input;
 
@@ -27,7 +30,14 @@ export default function Events(): JSX.Element {
   return (
     <div className='events-page'>
       <div className='events-page-container'>
-        <div className='events-title'>События Екатеринбуржского Дома Учителя</div>
+        <div className='buttonCreatePost'>
+          <RequireAuth>
+            <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
+              <Button text={'Создать событие'}></Button>
+            </RequireRole>
+          </RequireAuth>
+        </div>
+        <div className='events-title'>События Екатеринбургского Дома Учителя</div>
         <div className='calendar-search'>
           <CalendarSelect
             value={selectedDate}

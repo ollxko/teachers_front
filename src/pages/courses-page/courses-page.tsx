@@ -1,8 +1,11 @@
 import { useMemo, type JSX } from 'react';
 import './courses-page.css';
 import { Card, Input } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCourses } from '../../hooks/Courses/useCourses';
+import Button from '../../components/Button/Button';
+import { RequireAuth } from '../../components/RequireAuth/RequireAuth';
+import { RequireRole } from '../../components/RequireRole/RequireRole';
 const { Meta } = Card;
 const { Search } = Input;
 
@@ -21,6 +24,15 @@ export default function Courses(): JSX.Element {
   return (
     <div className='courses-page'>
       <div className='courses-сontainer'>
+        <div className='buttonCreatePost'>
+          <RequireAuth>
+            <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
+              <Link to='/create-course'>
+                <Button text={'Создать курс'}></Button>
+              </Link>
+            </RequireRole>
+          </RequireAuth>
+        </div>
         <Search
           className='search'
           placeholder='Введите текст для поиска'

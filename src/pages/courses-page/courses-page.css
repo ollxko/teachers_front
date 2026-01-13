@@ -13,6 +13,10 @@
   flex-direction: column;
   align-items: flex-end;
 }
+Link {
+  text-decoration: none;
+  color: inherit;
+} 
 
 .courses-grid {
   display: grid;

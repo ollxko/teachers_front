@@ -7,7 +7,6 @@ import Header from './components/Header/Header';
 import News from './pages/news-page/news-page';
 import Courses from './pages/courses-page/courses-page';
 import Events from './pages/events-page/events-page';
-import MainAdminPage from './pages/main-admin-page/main-admin-page';
 import NewsItem from './pages/news-item-page/news-item-page';
 import CourseItem from './pages/course-item-page/course-item-page';
 import EventItem from './pages/event-item-page/event-item-page';
@@ -21,8 +20,10 @@ import {
   updateUserFromToken,
 } from './store/slices/authSlice';
 import { useAutoRefreshToken } from './hooks/Auth/useAutoRefreshToken';
+import CreateEventPage from './pages/admin-pages/create-event/create-event-page';
+import CreateCoursePage from './pages/admin-pages/create-course/create-course-page';
+import CreateNewsPage from './pages/admin-pages/create-news/create-news-page';
 
-// Компонент для перенаправления с корня
 const HomeRedirect = () => {
   return <Navigate to='/news' replace />;
 };
@@ -67,7 +68,7 @@ function AppContent() {
         {/* Страницы аутентификации - редирект если уже авторизован */}
         <Route
           path='/login'
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to='/profile' replace />}
+          element={!isAuthenticated ? <LoginPage /> : <Navigate to='/news' replace />}
         />
         <Route
           path='/register'
@@ -88,11 +89,31 @@ function AppContent() {
 
         {/* Админские маршруты */}
         <Route
-          path='/admin'
+          path='/create-event'
           element={
             <RequireAuth>
               <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-                <MainAdminPage />
+                <CreateEventPage />
+              </RequireRole>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/create-course'
+          element={
+            <RequireAuth>
+              <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
+                <CreateCoursePage />
+              </RequireRole>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/create-news'
+          element={
+            <RequireAuth>
+              <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
+                <CreateNewsPage />
               </RequireRole>
             </RequireAuth>
           }
