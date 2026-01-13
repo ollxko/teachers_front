@@ -10,6 +10,7 @@ import { ImageUpload } from '../../../components/ImageUploader/ImageUploader';
 export default function CreateCoursePage(): JSX.Element {
   const [markdown, setMarkdown] = useState('');
   const [courseName, setCourseName] = useState('');
+  const [courseLink, setCourseLink] = useState(''); // Новое состояние для ссылки на курс
 
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const handleMarkdownChange = useCallback((newMarkdown: string) => {
@@ -38,12 +39,13 @@ export default function CreateCoursePage(): JSX.Element {
   //       name: courseName,
   //       description: markdown,
   //       imageBase64: uploadedImage || '',
+  //       link: courseLink, // Добавляем ссылку в запрос
   //     };
 
   //     await addCourse(newEvent);
   //   };
 
-  const isFormValid = markdown.trim() && courseName.trim();
+  const isFormValid = markdown.trim() && courseName.trim() && courseLink.trim(); // Добавляем проверку ссылки
 
   return (
     <div className='editor-container'>
@@ -77,6 +79,18 @@ export default function CreateCoursePage(): JSX.Element {
                   value={courseName}
                   onChange={e => setCourseName(e.target.value)}
                   className='full-width-input'
+                />
+              </div>
+
+              {/* Новое поле для ссылки на курс */}
+              <div className='form-field' style={{ marginTop: '16px' }}>
+                <div className='form-label'>Ссылка на курс:</div>
+                <Input
+                  placeholder='https://example.com/course'
+                  value={courseLink}
+                  onChange={e => setCourseLink(e.target.value)}
+                  className='full-width-input'
+                  type='url'
                 />
               </div>
             </div>
