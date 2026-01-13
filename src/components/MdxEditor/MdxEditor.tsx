@@ -1,4 +1,4 @@
-import React, { useCallback, useState, memo, useMemo } from 'react';
+import React, { useCallback, useState, memo } from 'react';
 import {
   MDXEditor,
   headingsPlugin,
@@ -28,13 +28,8 @@ interface MdxEditorComponentProps {
 }
 
 export const MdxEditorComponent = memo(
-  ({
-    initialMarkdown = '# Hello world',
-    onMarkdownChange,
-    readOnly,
-    className = '',
-  }: MdxEditorComponentProps) => {
-    const [markdown, setMarkdown] = useState(initialMarkdown);
+  ({ onMarkdownChange, readOnly, className = '' }: MdxEditorComponentProps) => {
+    const [markdown, setMarkdown] = useState('');
     const editorRef = React.useRef<MDXEditorMethods>(null);
 
     const handleMarkdownChange = useCallback(

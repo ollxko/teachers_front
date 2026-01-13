@@ -75,10 +75,12 @@ export default function EventItem(): JSX.Element {
               <FieldTimeOutlined />
               <Text type='secondary'>Время: {formatTime(displayData.date)}</Text>
             </div>
-            <div className='datetime-item'>
-              <EnvironmentOutlined />
-              <Text type='secondary'>Адрес: {displayData.address}</Text>
-            </div>
+            {displayData.address && (
+              <div className='datetime-item'>
+                <EnvironmentOutlined />
+                <Text type='secondary'>Адрес: {displayData.address}</Text>
+              </div>
+            )}
           </div>
 
           <div className='event-item-content'>

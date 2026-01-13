@@ -5,8 +5,8 @@ export type GetEventResponse = {
   id: string;
   name: string;
   description: string;
+  type: string;
   date: string;
-  eventType: string;
   address: string;
   imageUrl: string;
 };
@@ -28,5 +28,5 @@ export const eventsApi = {
   getEvents: (params?: EventsParams) =>
     apiClient.get<PagedResult<GetEventResponse>>('/events', { params }),
   getEventsById: (id: string) => apiClient.get<GetEventResponse>(`/events/${id}`),
-  addEvent: (data: AddEventRequest) => apiClient.post<GetEventResponse>('/events', { data }),
+  addEvent: (data: AddEventRequest) => apiClient.post<GetEventResponse>('/events', data),
 };

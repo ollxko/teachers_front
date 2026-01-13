@@ -21,6 +21,9 @@ import './main-admin-page.css';
 import type { AddEventRequest } from '../../api/eventsApi';
 import { useAddEvent } from '../../hooks/Events/useAddEvent';
 
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 export default function MainPage(): JSX.Element {
   const [markdown, setMarkdown] = useState('# Hello world');
   const [status, setStatus] = useState('online');
@@ -34,18 +37,20 @@ export default function MainPage(): JSX.Element {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+
   const { addEvent, result, loading, error } = useAddEvent();
 
   useEffect(() => {
     if (result) {
-      message.success('Событие успешно создано!');
+      messageApi.success('Событие успешно создано', 5);
       navigate('/events');
     }
   }, [result, navigate]);
 
   useEffect(() => {
     if (error) {
-      message.error(`Ошибка при создании события: ${error}`);
+      messageApi.error(`Ошибка при создании события: ${error}`, 5);
     }
   }, [error]);
 
@@ -61,15 +66,23 @@ export default function MainPage(): JSX.Element {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      message.error('Пожалуйста, выберите файл изображения (JPEG, PNG, GIF, WebP)');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      console.log(file.type);
+      messageApi.error('Пожалуйста, выберите файл изображения (JPEG, JPG, PNG)', 5);
       return;
     }
 
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-      message.error('Размер файла не должен превышать 5MB');
+    if (file.size > MAX_FILE_SIZE) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      const maxSizeMB = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(0);
+      messageApi.error(
+        `Файл слишком большой! Размер файла: ${fileSizeMB}MB. Максимальный размер: ${maxSizeMB}MB`,
+        5
+      );
       return;
     }
 
@@ -81,24 +94,18 @@ export default function MainPage(): JSX.Element {
       const base64 = e.target?.result as string;
       setUploadedImage(base64);
       setIsUploading(false);
-      message.success('Изображение успешно загружено');
     };
 
     reader.onerror = () => {
-      message.error('Ошибка при чтении файла');
+      messageApi.error('Ошибка при чтении файла', 5);
       setIsUploading(false);
     };
 
     reader.readAsDataURL(file);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   const handleRemoveImage = () => {
     setUploadedImage(null);
-    message.info('Изображение удалено');
   };
 
   const triggerFileInput = () => {
@@ -106,82 +113,33 @@ export default function MainPage(): JSX.Element {
   };
 
   const handleSave = async () => {
-    if (!markdown.trim()) {
-      message.warning('Редактор пуст. Добавьте контент перед сохранением.');
-      return;
-    }
+    const dateObj = dayjs(selectedDate, 'DD.MM.YYYY');
+    const dateString = dateObj.format('YYYY-MM-DD');
+    const timeString = selectedTime?.format('HH:mm') || '00:00';
 
-    if (!eventName.trim()) {
-      message.warning('Введите название события');
-      return;
-    }
+    const dateTimeString = `${dateString}T${timeString}:00.000Z`;
 
-    if (!selectedDate) {
-      message.warning('Выберите дату события');
-      return;
-    }
+    const newEvent: AddEventRequest = {
+      name: eventName,
+      description: markdown,
+      type: status === 'online' ? 1 : 0,
+      date: dateTimeString,
+      address: address,
+      imageBase64: uploadedImage || '',
+    };
 
-    if (!selectedTime) {
-      message.warning('Выберите время события');
-      return;
-    }
-
-    try {
-      // Формируем дату в формате YYYY-MM-DD
-      const dateObj = dayjs(selectedDate);
-      if (!dateObj.isValid()) {
-        message.error('Неверная дата. Пожалуйста, выберите дату заново.');
-        return;
-      }
-
-      if (!selectedTime.isValid()) {
-        message.error('Неверное время. Пожалуйста, выберите время заново.');
-        return;
-      }
-
-      const dateString = dateObj.format('YYYY-MM-DD');
-      const timeString = selectedTime.format('HH:mm');
-
-      // Создаем полную строку даты и времени
-      const dateTimeString = `${dateString}T${timeString}:00.000Z`;
-
-      // Проверяем, что получилась валидная дата
-      const finalDate = new Date(dateTimeString);
-      if (isNaN(finalDate.getTime())) {
-        message.error('Неверная комбинация даты и времени');
-        return;
-      }
-
-      const newEvent: AddEventRequest = {
-        name: eventName,
-        description: markdown,
-        type: status === 'online' ? 0 : 1,
-        date: dateTimeString,
-        address: address || 'Баргузин',
-        imageBase64: uploadedImage || '',
-      };
-
-      console.log('Данные для сохранения:', newEvent);
-      console.log('Дата в ISO формате:', dateTimeString);
-
-      // Вызываем функцию addEvent
-      const success = await addEvent(newEvent);
-
-      if (success) {
-        console.log('Событие успешно создано');
-      }
-    } catch (error) {
-      console.error('Ошибка при формировании даты:', error);
-      message.error('Ошибка при формировании даты события');
-    }
+    await addEvent(newEvent);
   };
+
+  const isFormValid = markdown.trim() && eventName.trim() && selectedDate && selectedTime;
 
   return (
     <div className='editor-container'>
+      {contextHolder}
       <Card
         title='Создание события'
         size='small'
-        style={{ marginBottom: 16 }}
+        className='event-card'
         extra={
           <Space>
             <Button
@@ -189,48 +147,46 @@ export default function MainPage(): JSX.Element {
               icon={<CloudUploadOutlined />}
               onClick={handleSave}
               loading={loading}
-              disabled={
-                !markdown.trim() || !eventName.trim() || !selectedDate || !selectedTime || loading
-              }
+              disabled={!isFormValid || loading}
               size='small'
             >
-              Отправить на сервер
+              Сохранить
             </Button>
           </Space>
         }
       >
         <Row gutter={24}>
           <Col xs={24} md={16}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <div style={{ marginBottom: 8, fontWeight: 500 }}>Название события:</div>
+            <div className='form-container'>
+              <div className='form-field'>
+                <div className='form-label'>Название события:</div>
                 <Input
                   placeholder='Введите название события'
                   value={eventName}
                   onChange={e => setEventName(e.target.value)}
-                  style={{ width: '100%' }}
+                  className='full-width-input'
                 />
               </div>
 
-              <div>
-                <div style={{ marginBottom: 8, fontWeight: 500 }}>Формат:</div>
+              <div className='form-field'>
+                <div className='form-label'>Формат:</div>
                 <Radio.Group
                   value={status}
                   onChange={e => setStatus(e.target.value)}
                   buttonStyle='solid'
-                  style={{ width: '100%' }}
+                  className='radio-group'
                 >
-                  <Radio.Button value='online' style={{ flex: 1, textAlign: 'center' }}>
+                  <Radio.Button value='online' className='radio-button'>
                     Онлайн
                   </Radio.Button>
-                  <Radio.Button value='offline' style={{ flex: 1, textAlign: 'center' }}>
+                  <Radio.Button value='offline' className='radio-button'>
                     Оффлайн
                   </Radio.Button>
                 </Radio.Group>
               </div>
 
-              <div style={{ width: '100%' }}>
-                <div style={{ marginBottom: 8, fontWeight: 500 }}>Дата:</div>
+              <div className='form-field'>
+                <div className='form-label'>Дата:</div>
                 <CalendarSelect
                   value={selectedDate}
                   onChange={setSelectedDate}
@@ -239,21 +195,21 @@ export default function MainPage(): JSX.Element {
                 />
               </div>
 
-              <div style={{ width: '100%' }}>
-                <div style={{ marginBottom: 8, fontWeight: 500 }}>Адрес:</div>
+              <div className='form-field'>
+                <div className='form-label'>Адрес:</div>
                 <Input
                   placeholder={
                     status === 'online' ? 'Для онлайн событий не требуется' : 'Введите адрес'
                   }
                   value={address}
                   onChange={e => setAddress(e.target.value)}
-                  style={{ width: '100%' }}
+                  className='full-width-input'
                   disabled={status === 'online'}
                 />
               </div>
 
-              <div style={{ width: '100%' }}>
-                <div style={{ marginBottom: 8, fontWeight: 500 }}>Время:</div>
+              <div className='form-field'>
+                <div className='form-label'>Время:</div>
                 <TimePicker
                   value={selectedTime}
                   onChange={handleTimeChange}
@@ -266,44 +222,23 @@ export default function MainPage(): JSX.Element {
           </Col>
 
           <Col xs={24} md={8}>
-            <div
-              style={{
-                border: '1px dashed #d9d9d9',
-                borderRadius: '8px',
-                padding: '20px',
-                textAlign: 'center',
-                minHeight: '300px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: uploadedImage ? 'flex-start' : 'center',
-              }}
-            >
+            <div className={`image-upload-container ${uploadedImage ? 'has-image' : ''}`}>
               <input
                 type='file'
                 ref={fileInputRef}
                 onChange={handleImageUpload}
                 accept='image/*'
-                style={{ display: 'none' }}
+                className='file-input'
               />
 
               {isUploading ? (
                 <Spin tip='Загрузка изображения...' size='large'>
-                  <div style={{ padding: '50px' }} />
+                  <div className='spin-container' />
                 </Spin>
               ) : uploadedImage ? (
-                <div style={{ width: '100%' }}>
-                  <div style={{ marginBottom: 16 }}>
-                    <img
-                      src={uploadedImage}
-                      alt='Uploaded preview'
-                      style={{
-                        maxWidth: '100%',
-                        maxHeight: '200px',
-                        borderRadius: '8px',
-                        objectFit: 'contain',
-                      }}
-                    />
+                <div className='image-preview-container'>
+                  <div className='image-preview-wrapper'>
+                    <img src={uploadedImage} alt='Uploaded preview' className='image-preview' />
                   </div>
 
                   <Space>
@@ -326,19 +261,19 @@ export default function MainPage(): JSX.Element {
                   </Space>
                 </div>
               ) : (
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ marginBottom: 16 }}>
-                    <UploadOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
+                <div>
+                  <div className='upload-icon-wrapper'>
+                    <UploadOutlined className='upload-icon-large' />
                   </div>
 
-                  <div style={{ marginBottom: 8 }}>
+                  <div className='upload-button-wrapper'>
                     <Button type='primary' icon={<UploadOutlined />} onClick={triggerFileInput}>
                       Выбрать файл
                     </Button>
                   </div>
 
-                  <Typography.Text type='secondary' style={{ fontSize: '12px' }}>
-                    Поддерживаемые форматы: JPEG, PNG, GIF, WebP
+                  <Typography.Text type='secondary' className='upload-hint'>
+                    Поддерживаемые форматы: JPEG, JPG, PNG
                     <br />
                     Максимальный размер: 5MB
                   </Typography.Text>
@@ -349,12 +284,7 @@ export default function MainPage(): JSX.Element {
         </Row>
       </Card>
 
-      <div
-        style={{
-          height: 'auto',
-          minHeight: '600px',
-        }}
-      >
+      <div className='mdx-editor-wrapper'>
         <MdxEditorComponent
           initialMarkdown={markdown}
           onMarkdownChange={handleMarkdownChange}

@@ -33,9 +33,9 @@ export default function EventCard({
   className = '',
   onCardClick,
   size = 'default',
-  address = '',
-  date = '00.00.0000',
-  time = '00:00',
+  address,
+  date,
+  time,
 }: EventCardProps): JSX.Element {
   const cardClassNames = [
     'custom-card',
@@ -70,10 +70,12 @@ export default function EventCard({
               <img className='clock-svg' src={ClockIcon} alt={'Clock'} />
               <h5>{time + '  ' + date}</h5>
             </div>
-            <div className='address-container'>
-              <img className='location-svg' src={LocationIcon} alt={'Location'} />
-              <h5>{address}</h5>
-            </div>
+            {address && (
+              <div className='address-container'>
+                <img className='location-svg' src={LocationIcon} alt={'Location'} />
+                <h5>{address}</h5>
+              </div>
+            )}
           </div>
         </div>
       </div>
