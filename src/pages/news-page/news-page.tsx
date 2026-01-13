@@ -24,7 +24,9 @@ export default function News(): JSX.Element {
       <div className='buttonCreatePost'>
         <RequireAuth>
           <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-            <Button text={'Создать новость'}></Button>
+            <Link to='/create-news'>
+              <Button text={'Создать новость'}></Button>
+            </Link>
           </RequireRole>
         </RequireAuth>
       </div>

@@ -33,7 +33,9 @@ export default function Events(): JSX.Element {
         <div className='buttonCreatePost'>
           <RequireAuth>
             <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-              <Button text={'Создать событие'}></Button>
+              <Link to='/create-event'>
+                <Button text={'Создать событие'}></Button>
+              </Link>
             </RequireRole>
           </RequireAuth>
         </div>
