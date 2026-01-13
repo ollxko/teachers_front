@@ -10,19 +10,18 @@ export default function LoginPage(): JSX.Element {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
   const { login, isAuthenticated, isLoading, error } = useAuth();
 
-  const from = location.state?.from?.pathname || '/';
+  const from = '/news';
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(from, { replace: true });
+      navigate(from);
     }
   }, [isAuthenticated, navigate, from]);
 
   const handleLogin = async () => {
-    await login({ username, password });
+    await login({ login: username, password });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

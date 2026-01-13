@@ -24,7 +24,7 @@ import { useAddEvent } from '../../hooks/Events/useAddEvent';
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-export function MainPage(): JSX.Element {
+export default function MainPage(): JSX.Element {
   const [markdown, setMarkdown] = useState('# Hello world');
   const [status, setStatus] = useState('online');
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -113,10 +113,10 @@ export function MainPage(): JSX.Element {
   };
 
   const handleSave = async () => {
-    const dateObj = dayjs(selectedDate);
+    const dateObj = dayjs(selectedDate, 'DD.MM.YYYY');
     const dateString = dateObj.format('YYYY-MM-DD');
     const timeString = selectedTime?.format('HH:mm') || '00:00';
-    
+
     const dateTimeString = `${dateString}T${timeString}:00.000Z`;
 
     const newEvent: AddEventRequest = {
@@ -227,22 +227,18 @@ export function MainPage(): JSX.Element {
                 type='file'
                 ref={fileInputRef}
                 onChange={handleImageUpload}
-                accept="image/*"
+                accept='image/*'
                 className='file-input'
               />
 
               {isUploading ? (
-                <Spin tip="Загрузка изображения..." size="large">
+                <Spin tip='Загрузка изображения...' size='large'>
                   <div className='spin-container' />
                 </Spin>
               ) : uploadedImage ? (
                 <div className='image-preview-container'>
                   <div className='image-preview-wrapper'>
-                    <img
-                      src={uploadedImage}
-                      alt="Uploaded preview"
-                      className='image-preview'
-                    />
+                    <img src={uploadedImage} alt='Uploaded preview' className='image-preview' />
                   </div>
 
                   <Space>
@@ -269,18 +265,14 @@ export function MainPage(): JSX.Element {
                   <div className='upload-icon-wrapper'>
                     <UploadOutlined className='upload-icon-large' />
                   </div>
-                  
+
                   <div className='upload-button-wrapper'>
-                    <Button
-                      type="primary"
-                      icon={<UploadOutlined />}
-                      onClick={triggerFileInput}
-                    >
+                    <Button type='primary' icon={<UploadOutlined />} onClick={triggerFileInput}>
                       Выбрать файл
                     </Button>
                   </div>
-                  
-                  <Typography.Text type="secondary" className='upload-hint'>
+
+                  <Typography.Text type='secondary' className='upload-hint'>
                     Поддерживаемые форматы: JPEG, JPG, PNG
                     <br />
                     Максимальный размер: 5MB

@@ -1,25 +1,27 @@
-// components/RequireRole.tsx
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser, hasAnyRole } from '../../store/slices/authSlice';
-import type { JSX } from 'react';
 
 interface RequireRoleProps {
-  children: JSX.Element;
+  children: React.ReactNode;
   allowedRoles: string[];
-  fallbackPath?: string;
+  fallbackPath: string;
 }
 
-export const RequireRole = ({
+export const RequireRole: React.FC<RequireRoleProps> = ({
   children,
   allowedRoles,
-  fallbackPath = '/unauthorized',
-}: RequireRoleProps) => {
+  fallbackPath,
+}) => {
   const user = useSelector(selectCurrentUser);
 
-  if (!hasAnyRole(user, allowedRoles)) {
+  // Проверяем, есть ли у пользователя нужные роли
+  const hasRequiredRole = hasAnyRole(user, allowedRoles);
+
+  if (!hasRequiredRole) {
+    // Перенаправляем на указанный путь
     return <Navigate to={fallbackPath} replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };

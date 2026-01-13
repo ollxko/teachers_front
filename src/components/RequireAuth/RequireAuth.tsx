@@ -1,20 +1,18 @@
-// components/RequireAuth.tsx
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/authSlice';
-import type { JSX } from 'react';
 
 interface RequireAuthProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
-export const RequireAuth = ({ children }: RequireAuthProps) => {
+export const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to='/login' state={{ from: location }} replace />;
+    // Перенаправляем на страницу входа
+    return <Navigate to='/login' replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };

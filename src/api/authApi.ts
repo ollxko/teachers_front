@@ -2,7 +2,7 @@
 import apiClient from './apiClient';
 
 export type LoginCredentials = {
-  username: string;
+  login: string;
   password: string;
 };
 
@@ -46,8 +46,7 @@ export const authApi = {
 
   register: (data: RegisterData) => apiClient.post<AuthResponse>('/auth/register', data),
 
-  refreshToken: (refreshToken: string) =>
-    apiClient.post<AuthResponse>('/auth/refresh', { refresh_token: refreshToken }),
+  refreshToken: () => apiClient.post('/auth/refresh'),
 
   logout: () => apiClient.post('/auth/logout'),
 
@@ -61,5 +60,5 @@ export const authApi = {
 
   resetPassword: (data: ResetPasswordData) => apiClient.post('/auth/resetPassword', data),
 
-  getProfile: () => apiClient.get('/auth/profile'),
+  // getProfile: () => apiClient.get('/auth/profile'),
 };

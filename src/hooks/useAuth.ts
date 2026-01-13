@@ -31,7 +31,7 @@ export const useAuth = () => {
     hasAnyRole: (roles: string[]) => hasAnyRole(user, roles),
     hasAllRoles: (roles: string[]) => hasAllRoles(user, roles),
 
-    login: (credentials: { username: string; password: string }) => dispatch(login(credentials)),
+    login: (credentials: { login: string; password: string }) => dispatch(login(credentials)),
     logout: () => dispatch(logout()),
     register: (data: any) => dispatch(register(data)),
     clearError: () => dispatch(clearError()),

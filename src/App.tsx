@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store, type AppDispatch } from './store/store';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { RequireRole } from './components/RequireRole/RequireRole';
@@ -7,7 +7,6 @@ import Header from './components/Header/Header';
 import News from './pages/news-page/news-page';
 import Courses from './pages/courses-page/courses-page';
 import Events from './pages/events-page/events-page';
-import Profile from './pages/profile-page/profile-page';
 import MainAdminPage from './pages/main-admin-page/main-admin-page';
 import NewsItem from './pages/news-item-page/news-item-page';
 import CourseItem from './pages/course-item-page/course-item-page';
@@ -16,7 +15,12 @@ import MyCoursesPage from './pages/my-courses-events/my-courses-events';
 import LoginPage from './pages/login-page/login-page';
 import CreateAccountPage from './pages/registration/creating-account-page/creating-account-page';
 import { useEffect } from 'react';
-import { loadUser } from './store/slices/authSlice';
+import {
+  selectIsAuthenticated,
+  checkTokenExpiration,
+  updateUserFromToken,
+} from './store/slices/authSlice';
+import { useAutoRefreshToken } from './hooks/Auth/useAutoRefreshToken';
 
 // Компонент для перенаправления с корня
 const HomeRedirect = () => {
@@ -35,13 +39,17 @@ const UnauthorizedPage = () => {
 
 function AppContent() {
   const dispatch = useDispatch<AppDispatch>();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
+  useAutoRefreshToken();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      dispatch(loadUser());
+    dispatch(checkTokenExpiration());
+
+    if (isAuthenticated) {
+      dispatch(updateUserFromToken());
     }
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
   return (
     <Router>
@@ -55,18 +63,19 @@ function AppContent() {
         <Route path='/courses/:id' element={<CourseItem />} />
         <Route path='/events' element={<Events />} />
         <Route path='/events/:id' element={<EventItem />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<CreateAccountPage />} />
+
+        {/* Страницы аутентификации - редирект если уже авторизован */}
+        <Route
+          path='/login'
+          element={!isAuthenticated ? <LoginPage /> : <Navigate to='/profile' replace />}
+        />
+        <Route
+          path='/register'
+          element={!isAuthenticated ? <CreateAccountPage /> : <Navigate to='/profile' replace />}
+        />
 
         {/* Защищенные маршруты (только для авторизованных) */}
-        <Route
-          path='/profile'
-          element={
-            <RequireAuth>
-              <Profile name='ФИО' />
-            </RequireAuth>
-          }
-        />
+        <Route path='/profile' element={<RequireAuth>{<div></div>}</RequireAuth>} />
 
         <Route
           path='/my-courses-events'
