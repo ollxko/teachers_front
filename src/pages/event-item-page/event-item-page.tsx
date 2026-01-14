@@ -8,6 +8,7 @@ import { CalendarOutlined, FieldTimeOutlined, EnvironmentOutlined } from '@ant-d
 import { useEventItem } from '../../hooks/useEventsItem';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
+import { MDXProvider } from '@mdx-js/react';
 
 const { Title, Text } = Typography;
 

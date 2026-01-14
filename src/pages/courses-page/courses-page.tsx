@@ -6,6 +6,8 @@ import { useCourses } from '../../hooks/Courses/useCourses';
 import Button from '../../components/Button/Button';
 import { RequireAuth } from '../../components/RequireAuth/RequireAuth';
 import { RequireRole } from '../../components/RequireRole/RequireRole';
+import { useSelector } from 'react-redux';
+import { hasAnyRole, selectCurrentUser } from '../../store/slices/authSlice';
 const { Meta } = Card;
 const { Search } = Input;
 
@@ -20,19 +22,19 @@ export default function Courses(): JSX.Element {
   );
 
   const { courses, loading, error } = useCourses(params);
+  const user = useSelector(selectCurrentUser);
+  const isAdmin = hasAnyRole(user, ['admin', 'superadmin']);
 
   return (
     <div className='courses-page'>
       <div className='courses-сontainer'>
-        <div className='buttonCreatePost'>
-          <RequireAuth>
-            <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-              <Link to='/create-course'>
-                <Button text={'Создать курс'}></Button>
-              </Link>
-            </RequireRole>
-          </RequireAuth>
-        </div>
+        {isAdmin && (
+          <div className='buttonCreatePost'>
+            <Link to='/create-news'>
+              <Button text={'Создать новость'}></Button>
+            </Link>
+          </div>
+        )}
         <Search
           className='search'
           placeholder='Введите текст для поиска'

@@ -1,15 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import mdx from '@mdx-js/rollup';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  // server: {
-  //   proxy: {
-  //     '/api/v0': {
-  //       target: 'http://localhost:5100',
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
+  plugins: [mdx(), react()],
 });

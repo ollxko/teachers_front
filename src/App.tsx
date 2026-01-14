@@ -13,11 +13,13 @@ import EventItem from './pages/event-item-page/event-item-page';
 import MyCoursesPage from './pages/my-courses-events/my-courses-events';
 import LoginPage from './pages/login-page/login-page';
 import CreateAccountPage from './pages/registration/creating-account-page/creating-account-page';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   selectIsAuthenticated,
   checkTokenExpiration,
   updateUserFromToken,
+  refreshToken,
+  initializeAuth,
 } from './store/slices/authSlice';
 import { useAutoRefreshToken } from './hooks/Auth/useAutoRefreshToken';
 import CreateEventPage from './pages/admin-pages/create-event/create-event-page';
@@ -28,12 +30,10 @@ const HomeRedirect = () => {
   return <Navigate to='/news' replace />;
 };
 
-// Компонент для страницы 404
 const NotFoundPage = () => {
   return <div>Страница не найдена</div>;
 };
 
-// Компонент для страницы "Доступ запрещен"
 const UnauthorizedPage = () => {
   return <div>У вас нет прав для доступа к этой странице</div>;
 };
@@ -41,22 +41,26 @@ const UnauthorizedPage = () => {
 function AppContent() {
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const initializedRef = useRef(false);
+  useEffect(() => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    dispatch(initializeAuth());
+  }, [dispatch]);
 
   useAutoRefreshToken();
 
   useEffect(() => {
-    dispatch(checkTokenExpiration());
-
     if (isAuthenticated) {
       dispatch(updateUserFromToken());
     }
-  }, [dispatch, isAuthenticated]);
+  }, [isAuthenticated, dispatch]);
 
   return (
     <Router>
       <Header />
       <Routes>
-        {/* Публичные маршруты */}
         <Route path='/' element={<HomeRedirect />} />
         <Route path='/news' element={<News />} />
         <Route path='/news/:id' element={<NewsItem />} />
@@ -65,7 +69,6 @@ function AppContent() {
         <Route path='/events' element={<Events />} />
         <Route path='/events/:id' element={<EventItem />} />
 
-        {/* Страницы аутентификации - редирект если уже авторизован */}
         <Route
           path='/login'
           element={!isAuthenticated ? <LoginPage /> : <Navigate to='/news' replace />}
@@ -119,7 +122,6 @@ function AppContent() {
           }
         />
 
-        {/* Специальные страницы */}
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>

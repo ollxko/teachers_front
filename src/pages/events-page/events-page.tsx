@@ -8,9 +8,9 @@ import { useEvents } from '../../hooks/Events/useEvents';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
 import { Link } from 'react-router-dom';
-import { RequireAuth } from '../../components/RequireAuth/RequireAuth';
-import { RequireRole } from '../../components/RequireRole/RequireRole';
 import Button from '../../components/Button/Button';
+import { selectCurrentUser, hasAnyRole } from '../../store/slices/authSlice';
+import { useSelector } from 'react-redux';
 
 const { Search } = Input;
 
@@ -26,19 +26,19 @@ export default function Events(): JSX.Element {
   );
 
   const { events, loading, error } = useEvents(params);
+  const user = useSelector(selectCurrentUser);
+  const isAdmin = hasAnyRole(user, ['admin', 'superadmin']);
 
   return (
     <div className='events-page'>
       <div className='events-page-container'>
-        <div className='buttonCreatePost'>
-          <RequireAuth>
-            <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-              <Link to='/create-event'>
-                <Button text={'Создать событие'}></Button>
-              </Link>
-            </RequireRole>
-          </RequireAuth>
-        </div>
+        {isAdmin && (
+          <div className='buttonCreatePost'>
+            <Link to='/create-news'>
+              <Button text={'Создать новость'}></Button>
+            </Link>
+          </div>
+        )}
         <div className='events-title'>События Екатеринбургского Дома Учителя</div>
         <div className='calendar-search'>
           <CalendarSelect

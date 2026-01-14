@@ -1,4 +1,3 @@
-// hooks/useAutoRefreshToken.ts
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch } from '../../store/store';
@@ -24,17 +23,14 @@ export const useAutoRefreshToken = () => {
     const now = Date.now();
     const timeToExpire = expiresAt - now;
 
-    // Обновляем за 9 минут до истечения (540000 мс)
     const refreshDelay = Math.max(timeToExpire - 9 * 60 * 1000, 1000);
 
     console.log(`Token will refresh in ${Math.round(refreshDelay / 1000 / 60)} minutes`);
 
-    // Очищаем предыдущий таймер
     if (refreshTimerRef.current) {
       clearTimeout(refreshTimerRef.current);
     }
 
-    // Устанавливаем новый таймер
     refreshTimerRef.current = setTimeout(() => {
       console.log('Auto-refreshing token...');
       dispatch(refreshToken());
@@ -54,21 +50,6 @@ export const useAutoRefreshToken = () => {
       dispatch(clearRefreshTimer());
     };
   }, [token, isAuthenticated, dispatch]);
-
-  // Проверяем токен при возвращении на вкладку
-  //   useEffect(() => {
-  //     const handleVisibilityChange = () => {
-  //       if (!document.hidden && isAuthenticated && token) {
-  //         scheduleTokenRefresh(token);
-  //       }
-  //     };
-
-  //     document.addEventListener('visibilitychange', handleVisibilityChange);
-
-  //     return () => {
-  //       document.removeEventListener('visibilitychange', handleVisibilityChange);
-  //     };
-  //   }, [isAuthenticated, token]);
 
   return null;
 };

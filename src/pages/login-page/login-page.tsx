@@ -12,13 +12,11 @@ export default function LoginPage(): JSX.Element {
   const navigate = useNavigate();
   const { login, isAuthenticated, isLoading, error } = useAuth();
 
-  const from = '/news';
-
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(from);
+      navigate('/news');
     }
-  }, [isAuthenticated, navigate, from]);
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async () => {
     await login({ login: username, password });

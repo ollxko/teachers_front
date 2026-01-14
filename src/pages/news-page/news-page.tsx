@@ -8,6 +8,8 @@ import { RequireAuth } from '../../components/RequireAuth/RequireAuth';
 import { RequireRole } from '../../components/RequireRole/RequireRole';
 import CreateEventPage from '../admin-pages/create-event/create-event-page';
 import Button from '../../components/Button/Button';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser, hasAnyRole } from '../../store/slices/authSlice';
 
 export default function News(): JSX.Element {
   const params = useMemo(
@@ -18,18 +20,19 @@ export default function News(): JSX.Element {
   );
 
   const { news, loading, error } = useNews(params);
+  const user = useSelector(selectCurrentUser);
+  const isAdmin = hasAnyRole(user, ['admin', 'superadmin']);
 
   return (
     <div className='news-сontainer'>
-      <div className='buttonCreatePost'>
-        <RequireAuth>
-          <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-            <Link to='/create-news'>
-              <Button text={'Создать новость'}></Button>
-            </Link>
-          </RequireRole>
-        </RequireAuth>
-      </div>
+      {isAdmin && (
+        <div className='buttonCreatePost'>
+          <Link to='/create-news'>
+            <Button text={'Создать новость'}></Button>
+          </Link>
+        </div>
+      )}
+
       <div className='next-line-container'>
         {news.map(item => (
           <Link to={`/news/${item.postId}`}>
