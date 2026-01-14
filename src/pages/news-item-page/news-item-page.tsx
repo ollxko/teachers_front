@@ -5,7 +5,7 @@ import Linkify from 'react-linkify';
 import { Typography, Spin, Alert } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import './news-item-page.css';
-import { useNewsItem } from '../../hooks/useNewsItem';
+import { useNewsItem } from '../../hooks/News/useNewsItem';
 
 const { Title, Text } = Typography;
 

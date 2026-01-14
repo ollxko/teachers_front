@@ -17,7 +17,7 @@ export type AddEventRequest = {
   type: number;
   date: string;
   address: string;
-  imageBase64: string;
+  imageBase64?: string;
 };
 
 export type EventsParams = {

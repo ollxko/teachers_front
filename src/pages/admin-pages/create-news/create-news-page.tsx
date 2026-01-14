@@ -4,9 +4,12 @@ import { CloudUploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { MdxEditorComponent } from '../../../components/MdxEditor/MdxEditor';
 import './create-news-page.css';
+import { useAddNews } from '../../../hooks/News/useAddNews';
 import { ImageUpload } from '../../../components/ImageUploader/ImageUploader';
+import type { CreatePostRequest } from '../../../api/newsApi';
+import type { SetMessageProps } from '../../../utils/setMessage';
 
-export default function CreateNewsPage(): JSX.Element {
+export default function CreateNewsPage({ setMessage }: SetMessageProps): JSX.Element {
   const [markdown, setMarkdown] = useState('');
   const [newsName, setNewsName] = useState('');
 
@@ -18,36 +21,37 @@ export default function CreateNewsPage(): JSX.Element {
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
-  // const { addNews, result, loading, error } = useAddNewsPost();
+  const { createPost, result, loading, error } = useAddNews();
 
-  // useEffect(() => {
-  //   if (result) {
-  //     messageApi.success('Новость успешно создан', 5);
-  //     navigate('/news');
-  //   }
-  // }, [result, navigate]);
+  useEffect(() => {
+    if (result) {
+      setMessage('Новость успешно создана');
+      navigate('/news');
+    }
+  }, [result, navigate]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     messageApi.error(`Ошибка при создании новости: ${error}`, 5);
-  //   }
-  // }, [error]);
+  useEffect(() => {
+    if (error) {
+      messageApi.error(`Ошибка при создании новости: ${error}`, 5);
+    }
+  }, [error]);
 
-  // const handleSave = async () => {
-  //   const newNewsItem: AddNewsRequest = {
-  //     name: newsItemName,
-  //     description: markdown,
-  //     imageBase64: uploadedImage || '',
-  //   };
+  const handleSave = async () => {
+    const newNewsItem: CreatePostRequest = {
+      title: newsName,
+      description: markdown,
+      imageBase64: uploadedImage || '',
+      postStatus: 0,
+    };
 
-  //   await addNews(newNewsItem);
-  // };
+    await createPost(newNewsItem);
+  };
 
   const isFormValid = markdown.trim() && newsName.trim();
 
   return (
     <div className='editor-container'>
-      {/* {contextHolder} */}
+      {contextHolder}
       <Card
         title='Создание новости'
         size='small'
@@ -57,9 +61,9 @@ export default function CreateNewsPage(): JSX.Element {
             <Button
               type='primary'
               icon={<CloudUploadOutlined />}
-              //   onClick={handleSave}
-              //   loading={loading}
-              //   disabled={!isFormValid || loading}
+                onClick={handleSave}
+                loading={loading}
+                disabled={!isFormValid || loading}
               size='small'
             >
               Сохранить

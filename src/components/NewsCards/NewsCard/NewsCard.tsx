@@ -21,9 +21,7 @@ export default function EventCard({
       cover={
         <div className='news-card-image-container'>
           <img
-            src={
-              'https://n1s1.hsmedia.ru/a5/17/1c/a5171c9e345e8c758452d23c2823bb15/2999x1995_0xIVRrPeGM_4566257777712071409.jpg'
-            }
+            src={image}
             className='news-card-image'
           />
         </div>

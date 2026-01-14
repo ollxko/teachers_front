@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { newsApi } from '../api/newsApi';
+import { newsApi } from '../../api/newsApi';
 
 export type NewsItemData = {
   id: string;

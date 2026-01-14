@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { eventsApi, type GetEventResponse } from '../api/eventsApi';
+import { eventsApi, type GetEventResponse } from '../../api/eventsApi';
 
 export const useEventItem = (id: string | undefined) => {
   const [eventsItem, setEventItem] = useState<GetEventResponse>();
