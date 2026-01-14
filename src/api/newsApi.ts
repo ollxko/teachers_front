@@ -1,21 +1,21 @@
 import apiClient from './apiClient';
+import type { PagedResult } from './pagedResult';
 
-export type NewsItem = {
+export type GetPostResponse = {
   postId: string;
   authorId: string;
   title: string;
   description: string;
   postStatus: string;
   createdAt: string;
+  imageUrl: string;
 };
 
-export type NewsResponse = {
-  take: number;
-  orderFieldName: string;
-  orderType: string;
-  cursorType: string;
-  items: NewsItem[];
-  actualTake: number;
+export type CreatePostRequest = {
+  title: string;
+  description: string;
+  imageBase64?: string;
+  postStatus?: number;
 };
 
 export type NewsParams = {
@@ -23,6 +23,8 @@ export type NewsParams = {
 };
 
 export const newsApi = {
-  getNews: (params?: NewsParams) => apiClient.get<NewsResponse>('/posts', { params }),
-  getNewsById: (id: string) => apiClient.get<{ data: NewsItem }>(`/posts/${id}`),
+  getNews: (params?: NewsParams) =>
+    apiClient.get<PagedResult<GetPostResponse>>('/posts', { params }),
+  getNewsById: (id: string) => apiClient.get<GetPostResponse>(`/posts/${id}`),
+  addNews: (data: CreatePostRequest) => apiClient.post<GetPostResponse>('/posts', data),
 };

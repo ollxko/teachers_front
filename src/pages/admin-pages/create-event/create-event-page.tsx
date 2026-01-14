@@ -21,8 +21,9 @@ import './create-event-page.css';
 import type { AddEventRequest } from '../../../api/eventsApi';
 import { useAddEvent } from '../../../hooks/Events/useAddEvent';
 import { ImageUpload } from '../../../components/ImageUploader/ImageUploader';
+import type { SetMessageProps } from '../../../utils/setMessage';
 
-export default function CreateEventPage(): JSX.Element {
+export default function CreateEventPage({ setMessage }: SetMessageProps): JSX.Element {
   const [markdown, setMarkdown] = useState('');
   const [status, setStatus] = useState('online');
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -32,20 +33,20 @@ export default function CreateEventPage(): JSX.Element {
 
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageInstance, messageElement] = message.useMessage();
 
   const { addEvent, result, loading, error } = useAddEvent();
 
   useEffect(() => {
     if (result) {
-      messageApi.success('Событие успешно создано', 5);
+      setMessage('Событие успешно создано');
       navigate('/events');
     }
   }, [result, navigate]);
 
   useEffect(() => {
     if (error) {
-      messageApi.error(`Ошибка при создании события: ${error}`, 5);
+      messageInstance.error(`Ошибка при создании события: ${error}`, 5);
     }
   }, [error]);
 
@@ -70,8 +71,11 @@ export default function CreateEventPage(): JSX.Element {
       type: status === 'online' ? 1 : 0,
       date: dateTimeString,
       address: address,
-      imageBase64: uploadedImage || '',
     };
+
+    if (uploadedImage) {
+      newEvent.imageBase64 = uploadedImage;
+    }
 
     await addEvent(newEvent);
   };
@@ -80,7 +84,7 @@ export default function CreateEventPage(): JSX.Element {
 
   return (
     <div className='editor-container'>
-      {contextHolder}
+      {messageElement}
       <Card
         title='Создание события'
         size='small'

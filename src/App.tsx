@@ -13,7 +13,7 @@ import EventItem from './pages/event-item-page/event-item-page';
 import MyCoursesPage from './pages/my-courses-events/my-courses-events';
 import LoginPage from './pages/login-page/login-page';
 import CreateAccountPage from './pages/registration/creating-account-page/creating-account-page';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   selectIsAuthenticated,
   checkTokenExpiration,
@@ -23,6 +23,8 @@ import { useAutoRefreshToken } from './hooks/Auth/useAutoRefreshToken';
 import CreateEventPage from './pages/admin-pages/create-event/create-event-page';
 import CreateCoursePage from './pages/admin-pages/create-course/create-course-page';
 import CreateNewsPage from './pages/admin-pages/create-news/create-news-page';
+
+import {message} from 'antd';
 
 const HomeRedirect = () => {
   return <Navigate to='/news' replace />;
@@ -39,6 +41,15 @@ const UnauthorizedPage = () => {
 };
 
 function AppContent() {
+  const [messageInstance, messageElement] = message.useMessage();
+  const [messageText, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (messageText) {
+      messageInstance.success(messageText, 5);
+    }
+  }, [messageText]);
+
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
@@ -55,6 +66,7 @@ function AppContent() {
   return (
     <Router>
       <Header />
+      {messageElement}
       <Routes>
         {/* Публичные маршруты */}
         <Route path='/' element={<HomeRedirect />} />
@@ -93,7 +105,7 @@ function AppContent() {
           element={
             <RequireAuth>
               <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-                <CreateEventPage />
+                <CreateEventPage setMessage={setMessage}/>
               </RequireRole>
             </RequireAuth>
           }
@@ -103,7 +115,7 @@ function AppContent() {
           element={
             <RequireAuth>
               <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-                <CreateCoursePage />
+                <CreateCoursePage setMessage={setMessage}/>
               </RequireRole>
             </RequireAuth>
           }
@@ -113,7 +125,7 @@ function AppContent() {
           element={
             <RequireAuth>
               <RequireRole allowedRoles={['admin', 'superadmin']} fallbackPath='/unauthorized'>
-                <CreateNewsPage />
+                <CreateNewsPage setMessage={setMessage}/>
               </RequireRole>
             </RequireAuth>
           }

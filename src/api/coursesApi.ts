@@ -1,22 +1,22 @@
 import apiClient from './apiClient';
+import type { PagedResult } from './pagedResult';
 
-export type CoursesItem = {
+export type GetCourseResponse = {
   id: string;
   name: string;
-  description: string;
-  link: string;
+  description?: string;
+  link?: string;
   createdAt: string;
-  imageUrl: string;
+  imageUrl?: string;
   price: number;
 };
 
-export type CoursesResponse = {
-  take: number;
-  orderFieldName: string;
-  orderType: string;
-  cursorType: string;
-  items: CoursesItem[];
-  actualTake: number;
+export type AddCourseRequest = {
+  name: string;
+  description: string;
+  link: string;
+  imageBase64?: string;
+  price:number;
 };
 
 export type CoursesParams = {
@@ -24,6 +24,7 @@ export type CoursesParams = {
 };
 
 export const coursesApi = {
-  getCourses: (params?: CoursesParams) => apiClient.get<CoursesResponse>('/courses', { params }),
-  getCourseById: (id: string) => apiClient.get<CoursesItem>(`/courses/${id}`),
+  getCourses: (params?: CoursesParams) => apiClient.get<PagedResult<GetCourseResponse>>('/courses', { params }),
+  getCourseById: (id: string) => apiClient.get<GetCourseResponse>(`/courses/${id}`),
+  addCourse: (data: AddCourseRequest) => apiClient.post<GetCourseResponse>('/courses', data),
 };

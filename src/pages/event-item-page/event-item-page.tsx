@@ -5,7 +5,7 @@ import { Tag, Typography } from 'antd';
 import Linkify from 'react-linkify';
 import Button from '../../components/Button/Button';
 import { CalendarOutlined, FieldTimeOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import { useEventItem } from '../../hooks/useEventsItem';
+import { useEventItem } from '../../hooks/Events/useEventsItem';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
 

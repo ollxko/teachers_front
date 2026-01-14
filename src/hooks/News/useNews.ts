@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { newsApi, type NewsItem, type NewsParams, type NewsResponse } from '../api/newsApi';
+import { newsApi, type GetPostResponse, type NewsParams } from '../../api/newsApi';
 
 export const useNews = (params?: NewsParams) => {
-  const [news, setNews] = useState<NewsItem[]>([]);
+  const [news, setNews] = useState<GetPostResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
