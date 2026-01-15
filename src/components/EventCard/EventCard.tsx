@@ -1,7 +1,7 @@
 import React, { type JSX } from 'react';
 import { Card, Tag } from 'antd';
-import ClockIcon from '../../Components/icons/clock.svg';
-import LocationIcon from '../../Components/icons/location.svg';
+import ClockIcon from '../../components/icons/clock.svg';
+import LocationIcon from '../../components/icons/location.svg';
 import './EventCard.css';
 
 export type EventCardProps = {

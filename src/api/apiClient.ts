@@ -1,7 +1,7 @@
 // apiClient.ts
 import axios, { type AxiosInstance } from 'axios';
 
-const API_BASE_URL = 'http://localhost:5100/api/v0';
+const API_BASE_URL = '/api';
 
 let apiClientInstance: AxiosInstance | null = null;
 let storeRef: any = null;
