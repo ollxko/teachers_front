@@ -2,7 +2,6 @@ import { useMemo, type JSX, useState, useEffect } from 'react';
 import './event-item-page.css';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tag, Typography, message, Button, List, Avatar, Spin } from 'antd';
-import Linkify from 'react-linkify';
 import {
   CalendarOutlined,
   FieldTimeOutlined,
@@ -14,6 +13,7 @@ import { useEventRegistration } from '../../hooks/Events/useEventRegistration';
 import { useEventRegistrations } from '../../hooks/Events/useEventRegistrations'; // Добавьте этот импорт
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
+import { MdxRenderer } from '../../components/MdxRenderer/MdxRenderer';
 
 const { Title, Text } = Typography;
 
@@ -227,9 +227,7 @@ export default function EventItem(): JSX.Element {
           )}
 
           <div className='event-item-content'>
-            <Linkify>
-              <Text>{displayData.description}</Text>
-            </Linkify>
+            <MdxRenderer content={displayData.description} />
           </div>
 
           {/* Добавлен компонент списка участников */}
