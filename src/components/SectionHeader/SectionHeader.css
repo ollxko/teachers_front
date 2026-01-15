@@ -1,0 +1,21 @@
+/* components/SectionHeader/SectionHeader.css */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  margin-top: 32px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.section-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+

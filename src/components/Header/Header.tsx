@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
+import UserMenuDropdown from '../DropDownMenu/DropDownMenu';
 export default function Header(): JSX.Element {
   console.log('Header component rendered');
   return (
@@ -17,11 +18,7 @@ export default function Header(): JSX.Element {
           События
         </Link>
       </div>
-      <div className='profile'>
-        <Link to={'/profile'} className='profile'>
-          Профиль
-        </Link>
-      </div>
+      <div className='profile'>{<UserMenuDropdown />}</div>
     </div>
   );
 }

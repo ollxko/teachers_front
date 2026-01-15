@@ -1,0 +1,12 @@
+.login-page-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.inputs-container {
+    border-radius: 6px;
+    margin-top: 150px;
+    width: 280px;
+    background-color: white;
+    padding: 30px;
+}

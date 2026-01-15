@@ -1,32 +1,22 @@
 import type { JSX } from 'react';
-import { useState } from 'react';
 import './course-item-page.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { Tag, Typography } from 'antd';
 import Linkify from 'react-linkify';
+import Button from '../../components/Button/Button';
+import { useCourseItem } from '../../hooks/Courses/useCourseItem';
 
-type CourseItemProps = {
-  title: string;
-  content: string;
-  cost: number;
-  image?: string;
-};
-
-const CourseData: CourseItemProps = {
-  title: 'Название курса',
-  content: 'Описание курса',
-  cost: 5000,
-  image: '/5472179671505434589.jpg',
-};
+const { Title, Text } = Typography;
 
 export default function CourseItem(): JSX.Element {
-  const [isLiked, setIsLiked] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const { coursesItem, loading, error } = useCourseItem(id);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
-
-  const formatCost = (cost: number): string => {
-    return cost.toLocaleString('ru-RU') + ' ₽';
+  const formatCost = (cost: number | undefined): string => {
+    if (cost !== undefined) {
+      return cost.toLocaleString('ru-RU') + ' ₽';
+    }
+    return '';
   };
 
   return (
@@ -38,38 +28,32 @@ export default function CourseItem(): JSX.Element {
       <div className='course-layout'>
         <div className='course-info'>
           <article className='course-item'>
-            <h1>{CourseData.title}</h1>
+            <Title>{coursesItem?.name}</Title>
+            <Tag color={'purple'}>{'Онлайн'}</Tag>
+            <Tag color={'blue'}>{'36 часов'}</Tag>
             <div className='course-item-content'>
-              <Linkify>{CourseData.content}</Linkify>
+              <Title level={2}>{'Описание курса'}</Title>
+              <Linkify>
+                <Text>{coursesItem?.description}</Text>
+              </Linkify>
             </div>
           </article>
         </div>
 
         <div className='course-sidebar'>
-          {CourseData.image && (
+          {coursesItem?.imageUrl && (
             <div className='course-image-container'>
-              <img src={CourseData.image} alt={CourseData.title} className='course-item-image' />
+              <img
+                src={coursesItem.imageUrl}
+                alt={coursesItem?.name}
+                className='course-item-image'
+              />
             </div>
           )}
 
-          <div className='course-actions'>
-            <button className='enroll-button'>Записаться</button>
+          <Button text='Записаться' />
 
-            <button className={`like-button ${isLiked ? 'liked' : ''}`} onClick={handleLike}>
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill={isLiked ? 'currentColor' : 'none'}
-                stroke='currentColor'
-                strokeWidth='2'
-              >
-                <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z' />
-              </svg>
-            </button>
-          </div>
-
-          <div className='course-cost'>{formatCost(CourseData.cost)}</div>
+          <Text className='course-cost'>{formatCost(coursesItem?.price)}</Text>
         </div>
       </div>
     </div>

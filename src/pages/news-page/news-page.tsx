@@ -1,18 +1,48 @@
-import type { JSX } from 'react';
+import { useMemo, type JSX } from 'react';
 import './news-page.css';
-import BigNewsCard from '../../components/NewsCards/BigNewsCard/BigNewsCard';
-import SmallNewsCard from '../../components/NewsCards/SmallNewsCard/SmallNewsCard';
+import NewsCard from '../../components/NewsCards/NewsCard/NewsCard';
+import { useNews } from '../../hooks/News/useNews';
+import { formatDate } from '../../utils/dateFormatter';
+import { Link } from 'react-router-dom';
+import { RequireAuth } from '../../components/RequireAuth/RequireAuth';
+import { RequireRole } from '../../components/RequireRole/RequireRole';
+import Button from '../../components/Button/Button';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser, hasAnyRole } from '../../store/slices/authSlice';
 
 export default function News(): JSX.Element {
+  const params = useMemo(
+    () => ({
+      take: 10,
+    }),
+    []
+  );
+
+  const { news, loading, error } = useNews(params);
+  const user = useSelector(selectCurrentUser);
+  const isAdmin = hasAnyRole(user, ['admin', 'superadmin']);
+
   return (
     <div className='news-сontainer'>
-      <div className='first-line-container'>
-        <BigNewsCard title={'Новость'} date={'10.10'} />
-        <div className='small-cards-container'>
-          <SmallNewsCard title={'Новость'} date={'10.10'} />
-          <SmallNewsCard title={'Новость'} date={'10.10'} />
-          <SmallNewsCard title={'Новость'} date={'10.10'} />
+      {isAdmin && (
+        <div className='buttonCreatePost'>
+          <Link to='/create-news'>
+            <Button text={'Создать новость'}></Button>
+          </Link>
         </div>
+      )}
+
+      <div className='next-line-container'>
+        {news.map(item => (
+          <Link to={`/news/${item.postId}`}>
+            <NewsCard
+              title={item.title}
+              date={formatDate(item.createdAt)}
+              image={item.imageUrl}
+              size='medium'
+            />
+          </Link>
+        ))}
       </div>
     </div>
   );

@@ -1,46 +1,75 @@
-import { type JSX } from 'react';
+import { type JSX, useState } from 'react';
 import './events-page.css';
+import { Input } from 'antd';
 import EventCard from '../../components/EventCard/EventCard';
-import Calendar from '../../components/Calendar/Calendar.tsx';
-import SearchPlaceholder from '../../components/SearchPlaceholder/SearchPlaceholder.tsx';
+import CalendarSelect from '../../components/CalendarSelect/CalendarSelect';
+import { useMemo } from 'react';
+import { useEvents } from '../../hooks/Events/useEvents';
+import { formatDate } from '../../utils/dateFormatter';
+import { formatTime } from '../../utils/timeFormatter';
+import { Link } from 'react-router-dom';
+import Button from '../../components/Button/Button';
+import { selectCurrentUser, hasAnyRole } from '../../store/slices/authSlice';
+import { useSelector } from 'react-redux';
+
+const { Search } = Input;
 
 export default function Events(): JSX.Element {
-  const cardsData = [
-    {
-      id: 1,
-      title: 'Cобытие 1',
-      time: '14:00',
-      address: 'МАОУ СОШ 100',
-      image: 'https://via.placeholder.com/80',
-    },
-    {
-      id: 2,
-      title: 'Cобытие 2',
-      time: '14:00',
-      address: 'МАОУ СОШ 100',
-      image: 'https://via.placeholder.com/80',
-    },
-    {
-      id: 3,
-      title: 'Cобытие 3',
-      time: '14:00',
-      address: 'МАОУ СОШ 100',
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [searchText, setSearchText] = useState('');
 
-      image: 'https://via.placeholder.com/80',
-    },
-  ];
+  const params = useMemo(
+    () => ({
+      take: 10,
+    }),
+    []
+  );
+
+  const { events, loading, error } = useEvents(params);
+  const user = useSelector(selectCurrentUser);
+  const isAdmin = hasAnyRole(user, ['admin', 'superadmin']);
 
   return (
     <div className='events-page'>
       <div className='events-page-container'>
-        <div className='events-title'>События Екатеринбуржского Дома Учителя</div>
+        {isAdmin && (
+          <div className='buttonCreatePost'>
+            <Link to='/create-event'>
+              <Button text={'Создать событие'}></Button>
+            </Link>
+          </div>
+        )}
+        <div className='events-title'>События Екатеринбургского Дома Учителя</div>
         <div className='calendar-search'>
-          <Calendar />
-          <SearchPlaceholder />
+          <CalendarSelect
+            value={selectedDate}
+            onChange={setSelectedDate}
+            placeholder='Выберите дату'
+            width={300}
+          />
+
+          <Search
+            placeholder='Введите текст для поиска'
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            allowClear
+            size='middle'
+            style={{ width: 300 }}
+          />
         </div>
         <div className='event-cards-container'>
-          {cardsData.map(({ id, title, time, address, image }) => (
-            <EventCard id={id} title={title} time={time} address={address} image={image} />
+          {events.map(event => (
+            <Link to={`/events/${event.id}`}>
+              <EventCard
+                key={event.id}
+                image={event.imageUrl}
+                title={event.name}
+                tag={event.type}
+                date={formatDate(event.date)}
+                time={formatTime(event.date)}
+                address={event.address}
+              />
+            </Link>
           ))}
         </div>
       </div>
