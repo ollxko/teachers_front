@@ -1,11 +1,10 @@
-// pages/NewsItemPage/NewsItemPage.tsx
 import { type JSX } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Linkify from 'react-linkify';
 import { Typography, Spin, Alert } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import './news-item-page.css';
 import { useNewsItem } from '../../hooks/News/useNewsItem';
+import { MdxRenderer } from '../../components/MdxRenderer/MdxRenderer';
 
 const { Title, Text } = Typography;
 
@@ -28,20 +27,19 @@ export default function NewsItemPage(): JSX.Element {
   }
 
   return (
-    <div className='page-item-container'>
-      <Link to='/news' className='back-link'>
+    <div className="page-item-container">
+      <Link to="/news" className="back-link">
         ← Назад к списку новостей
       </Link>
 
-      <article className='news-item'>
+      <article className="news-item">
         <Title>{newsItem.title}</Title>
-        <Text type='secondary' className='news-date'>
+        <Text type="secondary" className="news-date">
           {newsItem.date}
         </Text>
-        <div className='news-item-content'>
-          <Linkify>
-            <Text>{newsItem.content}</Text>
-          </Linkify>
+        
+        <div className="news-item-content">
+          <MdxRenderer content={newsItem.content} />
         </div>
       </article>
     </div>
