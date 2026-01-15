@@ -35,7 +35,12 @@ export default function News(): JSX.Element {
       <div className='next-line-container'>
         {news.map(item => (
           <Link to={`/news/${item.postId}`}>
-            <NewsCard title={item.title} date={formatDate(item.createdAt)} image={item.imageUrl} size='medium' />
+            <NewsCard
+              title={item.title}
+              date={formatDate(item.createdAt)}
+              image={item.imageUrl}
+              size='medium'
+            />
           </Link>
         ))}
       </div>

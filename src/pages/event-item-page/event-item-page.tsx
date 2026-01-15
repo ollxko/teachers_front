@@ -1,14 +1,19 @@
-import { useMemo, type JSX } from 'react';
+import { useMemo, type JSX, useState, useEffect } from 'react';
 import './event-item-page.css';
-import { Link, useParams } from 'react-router-dom';
-import { Tag, Typography } from 'antd';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Tag, Typography, message, Button, List, Avatar, Spin } from 'antd';
 import Linkify from 'react-linkify';
-import Button from '../../components/Button/Button';
-import { CalendarOutlined, FieldTimeOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  FieldTimeOutlined,
+  EnvironmentOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { useEventItem } from '../../hooks/Events/useEventsItem';
+import { useEventRegistration } from '../../hooks/Events/useEventRegistration';
+import { useEventRegistrations } from '../../hooks/Events/useEventRegistrations'; // Добавьте этот импорт
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
-import { MDXProvider } from '@mdx-js/react';
 
 const { Title, Text } = Typography;
 
@@ -38,11 +43,135 @@ function DateFormatter({ dateString }: DateFormatterProps) {
   return formattedDate;
 }
 
+type RegisteredUser = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+// Компонент списка участников
+function EventParticipants({ eventId }: { eventId: string }) {
+  const [registrationsWithUsers, setRegistrationsWithUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const { getEventRegistrationsWithUsers } = useEventRegistrations();
+
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await getEventRegistrationsWithUsers(eventId, 100);
+        setRegistrationsWithUsers(response.items);
+        console.log(response.items);
+      } catch (err: any) {
+        const errorMessage =
+          err.response?.data?.message || 'Не удалось загрузить список участников';
+        setError(errorMessage);
+        message.error('Не удалось загрузить список участников');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (eventId) {
+      fetchParticipants();
+    }
+  }, [eventId, getEventRegistrationsWithUsers]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+        <Spin />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div style={{ color: 'red', padding: '10px' }}>Ошибка: {error}</div>;
+  }
+
+  // Фильтруем только регистрации с данными пользователей
+  const registrationsWithValidUsers = registrationsWithUsers.filter(item => item.user);
+
+  if (registrationsWithValidUsers.length === 0) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <Text type='secondary'>На это событие еще никто не записался</Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className='event-participants'>
+      <Title level={4} style={{ marginBottom: 16 }}>
+        Участники ({registrationsWithValidUsers.length})
+      </Title>
+
+      <List
+        dataSource={registrationsWithValidUsers}
+        renderItem={registration => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<Avatar icon={<UserOutlined />} />}
+              title={<Text strong>{registration.user.userName}</Text>}
+              description={
+                <div>
+                  <div>{registration.user.email}</div>
+                  <div style={{ marginTop: 4, fontSize: '12px', color: '#888' }}>
+                    Записался: {new Date(registration.createdAt).toLocaleDateString('ru-RU')}
+                  </div>
+                </div>
+              }
+            />
+          </List.Item>
+        )}
+        style={{ backgroundColor: '#fafafa', borderRadius: 8, padding: '0 16px' }}
+      />
+    </div>
+  );
+}
+
 export default function EventItem(): JSX.Element {
   const { id } = useParams<{ id: string }>();
-  const { eventsItem, loading, error } = useEventItem(id);
+  const navigate = useNavigate();
 
-  // Используем данные из API, если они есть, иначе показываем заглушку
+  const { eventsItem, loading: eventLoading } = useEventItem(id);
+  const {
+    isRegistered,
+    loading: registrationLoading,
+    error: registrationError,
+    toggleRegistration,
+    userId,
+    user,
+  } = useEventRegistration(id);
+
+  if (registrationError) {
+    message.error(registrationError);
+  }
+
+  const handleRegistrationClick = async () => {
+    if (!userId || !user) {
+      message.info('Для записи на событие необходимо авторизоваться');
+      navigate('/login', { state: { from: `/events/${id}` } });
+      return;
+    }
+
+    try {
+      await toggleRegistration();
+      message.success(
+        isRegistered ? 'Вы успешно отменили запись на событие' : 'Вы успешно записались на событие'
+      );
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        (isRegistered ? 'Не удалось отменить запись' : 'Не удалось записаться на событие');
+      message.error(errorMessage);
+    }
+  };
+
   const displayData = eventsItem || {
     name: 'Загрузка...',
     description: 'Загрузка описания...',
@@ -51,6 +180,11 @@ export default function EventItem(): JSX.Element {
     imageUrl: '',
     isOnline: false,
     type: 'Мероприятие',
+  };
+
+  const getRegistrationStatusText = () => {
+    if (!userId) return 'Записаться';
+    return isRegistered ? 'Отменить запись' : 'Записаться';
   };
 
   return (
@@ -63,7 +197,7 @@ export default function EventItem(): JSX.Element {
         <article className='event-item'>
           <Title>{displayData.name}</Title>
 
-          <Tag color={'cyan'}>Мероприятие</Tag>
+          <Tag color={'cyan'}>{displayData.type}</Tag>
 
           <div className='event-item-datetime'>
             <div className='datetime-item'>
@@ -84,11 +218,22 @@ export default function EventItem(): JSX.Element {
             )}
           </div>
 
+          {userId && (
+            <div style={{ margin: '15px 0' }}>
+              <Tag color={isRegistered ? 'green' : 'blue'}>
+                {isRegistered ? 'Вы записаны на это событие' : 'Вы не записаны на это событие'}
+              </Tag>
+            </div>
+          )}
+
           <div className='event-item-content'>
             <Linkify>
               <Text>{displayData.description}</Text>
             </Linkify>
           </div>
+
+          {/* Добавлен компонент списка участников */}
+          {id && <EventParticipants eventId={id} />}
         </article>
 
         <div className='event-sidebar'>
@@ -98,7 +243,24 @@ export default function EventItem(): JSX.Element {
             </div>
           )}
 
-          <Button text='Записаться' />
+          <Button
+            onClick={handleRegistrationClick}
+            loading={registrationLoading || eventLoading}
+            disabled={eventLoading}
+            type={isRegistered ? 'link' : 'primary'}
+            style={{ width: '100%' }}
+          >
+            {getRegistrationStatusText()}
+          </Button>
+
+          {!userId && (
+            <Text
+              type='secondary'
+              style={{ display: 'block', marginTop: '10px', textAlign: 'center' }}
+            >
+              Авторизуйтесь, чтобы записаться
+            </Text>
+          )}
         </div>
       </div>
     </div>

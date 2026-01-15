@@ -16,10 +16,9 @@ import CreateAccountPage from './pages/registration/creating-account-page/creati
 import { useEffect, useState, useRef } from 'react';
 import {
   selectIsAuthenticated,
-  checkTokenExpiration,
   updateUserFromToken,
-  refreshToken,
   initializeAuth,
+  selectIsLoading,
 } from './store/slices/authSlice';
 import { useAutoRefreshToken } from './hooks/Auth/useAutoRefreshToken';
 import CreateEventPage from './pages/admin-pages/create-event/create-event-page';
@@ -27,6 +26,7 @@ import CreateCoursePage from './pages/admin-pages/create-course/create-course-pa
 import CreateNewsPage from './pages/admin-pages/create-news/create-news-page';
 
 import { message } from 'antd';
+import { setStoreRef } from './api/apiClient';
 
 const HomeRedirect = () => {
   return <Navigate to='/news' replace />;
@@ -43,6 +43,7 @@ const UnauthorizedPage = () => {
 function AppContent() {
   const [messageInstance, messageElement] = message.useMessage();
   const [messageText, setMessage] = useState<string | null>(null);
+  const [isAppInitialized, setIsAppInitialized] = useState(false);
 
   useEffect(() => {
     if (messageText) {
@@ -52,12 +53,26 @@ function AppContent() {
 
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isLoading = useSelector(selectIsLoading); // Добавьте этот селектор
+
   const initializedRef = useRef(false);
+
   useEffect(() => {
     if (initializedRef.current) return;
     initializedRef.current = true;
 
-    dispatch(initializeAuth());
+    const initApp = async () => {
+      try {
+        await dispatch(initializeAuth()).unwrap();
+        setIsAppInitialized(true);
+      } catch (error) {
+        // Если нет сессии, все равно помечаем как инициализированное
+        setIsAppInitialized(true);
+        console.log('No existing session');
+      }
+    };
+
+    initApp();
   }, [dispatch]);
 
   useAutoRefreshToken();
@@ -67,6 +82,22 @@ function AppContent() {
       dispatch(updateUserFromToken());
     }
   }, [isAuthenticated, dispatch]);
+
+  // Пока приложение не инициализировано, показываем загрузку
+  if (!isAppInitialized || isLoading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        Загрузка...
+      </div>
+    );
+  }
 
   return (
     <Router>
@@ -142,6 +173,9 @@ function AppContent() {
 }
 
 function App() {
+  useEffect(() => {
+    setStoreRef(store);
+  }, []);
   return (
     <Provider store={store}>
       <AppContent />

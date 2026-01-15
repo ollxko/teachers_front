@@ -16,7 +16,7 @@ export type AddCourseRequest = {
   description: string;
   link: string;
   imageBase64?: string;
-  price:number;
+  price: number;
 };
 
 export type CoursesParams = {
@@ -24,7 +24,8 @@ export type CoursesParams = {
 };
 
 export const coursesApi = {
-  getCourses: (params?: CoursesParams) => apiClient.get<PagedResult<GetCourseResponse>>('/courses', { params }),
+  getCourses: (params?: CoursesParams) =>
+    apiClient.get<PagedResult<GetCourseResponse>>('/courses', { params }),
   getCourseById: (id: string) => apiClient.get<GetCourseResponse>(`/courses/${id}`),
   addCourse: (data: AddCourseRequest) => apiClient.post<GetCourseResponse>('/courses', data),
 };

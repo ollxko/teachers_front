@@ -34,8 +34,8 @@ export default function Events(): JSX.Element {
       <div className='events-page-container'>
         {isAdmin && (
           <div className='buttonCreatePost'>
-            <Link to='/create-news'>
-              <Button text={'Создать новость'}></Button>
+            <Link to='/create-event'>
+              <Button text={'Создать событие'}></Button>
             </Link>
           </div>
         )}

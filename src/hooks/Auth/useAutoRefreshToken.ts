@@ -1,45 +1,62 @@
 import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { type AppDispatch } from '../../store/store';
-import {
-  selectToken,
-  selectIsAuthenticated,
-  refreshToken,
-  clearRefreshTimer,
-} from '../../store/slices/authSlice';
+import { useSelector } from 'react-redux';
+import { selectToken, selectIsAuthenticated } from '../../store/slices/authSlice';
 import { parseJwt } from '../../utils/jwtUtils';
+import apiClient from '../../api/apiClient'; // Импортируем напрямую
 
 export const useAutoRefreshToken = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const token = useSelector(selectToken);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const scheduleTokenRefresh = (currentToken: string) => {
-    const decoded = parseJwt(currentToken);
-    if (!decoded?.exp) return;
-
-    const expiresAt = decoded.exp * 1000;
-    const now = Date.now();
-    const timeToExpire = expiresAt - now;
-
-    const refreshDelay = Math.max(timeToExpire - 9 * 60 * 1000, 1000);
-
-    console.log(`Token will refresh in ${Math.round(refreshDelay / 1000 / 60)} minutes`);
-
-    if (refreshTimerRef.current) {
-      clearTimeout(refreshTimerRef.current);
-    }
-
-    refreshTimerRef.current = setTimeout(() => {
-      console.log('Auto-refreshing token...');
-      dispatch(refreshToken());
-    }, refreshDelay);
-  };
+  const isRefreshingRef = useRef(false);
 
   useEffect(() => {
+    // Очищаем предыдущий таймер
+    if (refreshTimerRef.current) {
+      clearTimeout(refreshTimerRef.current);
+      refreshTimerRef.current = null;
+    }
+
     if (isAuthenticated && token) {
-      scheduleTokenRefresh(token);
+      const decoded = parseJwt(token);
+      if (!decoded?.exp) return;
+
+      const expiresAt = decoded.exp * 1000;
+      const now = Date.now();
+      const timeToExpire = expiresAt - now;
+
+      // Обновляем токен за 9 минут до истечения
+      const refreshDelay = Math.max(timeToExpire - 9 * 60 * 1000, 1000);
+
+      console.log(`Token will refresh in ${Math.round(refreshDelay / 1000 / 60)} minutes`);
+
+      // Устанавливаем таймер
+      refreshTimerRef.current = setTimeout(async () => {
+        if (isRefreshingRef.current) return;
+        isRefreshingRef.current = true;
+
+        try {
+          console.log('Auto-refreshing token...');
+
+          // Обновляем токен напрямую через API, без dispatch
+          const response = await apiClient.post('/auth/refresh');
+          const newToken = response.data.access_token;
+
+          // Сохраняем новый токен в store без перерендера
+          // Для этого нужно обновить store напрямую
+          const store = (window as any).__storeRef;
+          if (store) {
+            store.dispatch({
+              type: 'auth/refreshToken/fulfilled',
+              payload: { access_token: newToken },
+            });
+          }
+        } catch (error) {
+          console.error('Token refresh failed:', error);
+        } finally {
+          isRefreshingRef.current = false;
+        }
+      }, refreshDelay);
     }
 
     return () => {
@@ -47,9 +64,8 @@ export const useAutoRefreshToken = () => {
         clearTimeout(refreshTimerRef.current);
         refreshTimerRef.current = null;
       }
-      dispatch(clearRefreshTimer());
     };
-  }, [token, isAuthenticated, dispatch]);
+  }, [token, isAuthenticated]);
 
   return null;
 };

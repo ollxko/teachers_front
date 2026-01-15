@@ -30,8 +30,8 @@ export default function Courses(): JSX.Element {
       <div className='courses-сontainer'>
         {isAdmin && (
           <div className='buttonCreatePost'>
-            <Link to='/create-news'>
-              <Button text={'Создать новость'}></Button>
+            <Link to='/create-course'>
+              <Button text={'Создать курс'}></Button>
             </Link>
           </div>
         )}
