@@ -2,9 +2,9 @@ import type { JSX } from 'react';
 import './course-item-page.css';
 import { Link, useParams } from 'react-router-dom';
 import { Tag, Typography } from 'antd';
-import Linkify from 'react-linkify';
 import Button from '../../components/Button/Button';
 import { useCourseItem } from '../../hooks/Courses/useCourseItem';
+import { MdxRenderer } from '../../components/MdxRenderer/MdxRenderer';
 
 const { Title, Text } = Typography;
 
@@ -33,9 +33,7 @@ export default function CourseItem(): JSX.Element {
             <Tag color={'blue'}>{'36 часов'}</Tag>
             <div className='course-item-content'>
               <Title level={2}>{'Описание курса'}</Title>
-              <Linkify>
-                <Text>{coursesItem?.description}</Text>
-              </Linkify>
+              <MdxRenderer content={coursesItem?.description} />
             </div>
           </article>
         </div>
