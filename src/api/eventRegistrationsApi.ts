@@ -17,7 +17,6 @@ export type EventRegistrationsResponse = {
 };
 
 export const eventRegistrationsApi = {
-  // Создать регистрацию
   createRegistration: async (eventId: string, userId: string): Promise<EventRegistration> => {
     const response = await apiClient.post('/eventsRegistrations', {
       eventId,
@@ -26,13 +25,11 @@ export const eventRegistrationsApi = {
     return response.data;
   },
 
-  // Получить регистрацию по ID
   getRegistrationById: async (id: string): Promise<EventRegistration> => {
     const response = await apiClient.get(`/eventsRegistrations/${id}`);
     return response.data;
   },
 
-  // Получить регистрации с фильтрами
   getRegistrations: async (params?: {
     cursor?: string;
     take?: number;
@@ -44,7 +41,6 @@ export const eventRegistrationsApi = {
     return response.data;
   },
 
-  // Проверить, записан ли пользователь на событие
   checkUserRegistration: async (
     eventId: string,
     userId: string
@@ -68,7 +64,6 @@ export const eventRegistrationsApi = {
     }
   },
 
-  // Удалить регистрацию
   deleteRegistration: async (id: string): Promise<void> => {
     await apiClient.delete(`/eventsRegistrations/${id}`);
   },

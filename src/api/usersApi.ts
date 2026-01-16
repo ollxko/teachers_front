@@ -16,10 +16,8 @@ export const usersApi = {
       const response = await apiClient.get(`/users/${userId}`);
       console.log(`[usersApi] Success response for ${userId}:`, response.data);
 
-      // API возвращает {userName, email, role} но НЕ id
-      // Добавляем id из параметра запроса
       return {
-        id: userId, // Добавляем id который мы знаем
+        id: userId,
         userName: response.data.userName,
         email: response.data.email,
         role: response.data.role,
