@@ -65,14 +65,14 @@ export default function Events(): JSX.Element {
             width={300}
           />
 
-          <Search
+          {/* <Search
             placeholder='Поиск по названию (опционально)'
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
             allowClear
             size='middle'
             style={{ width: 300 }}
-          />
+          /> */}
         </div>
 
         {selectedDate && (

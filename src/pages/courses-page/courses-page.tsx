@@ -37,13 +37,13 @@ export default function Courses(): JSX.Element {
         )}
         <div className='courses-title'>Курсы Екатеринбургского Дома Учителя</div>
 
-        <Search
+        {/* <Search
           className='search'
           placeholder='Введите текст для поиска'
           allowClear
           size='middle'
           style={{ width: 300 }}
-        />
+        /> */}
         <div className='courses-grid'>
           {courses.map(course => (
             <Card
