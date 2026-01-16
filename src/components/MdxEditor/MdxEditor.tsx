@@ -9,7 +9,6 @@ import {
   toolbarPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
-  CodeToggle,
   ListsToggle,
   InsertTable,
   BlockTypeSelect,
@@ -63,7 +62,6 @@ export const MdxEditorComponent = memo(
                   <DiffSourceToggleWrapper>
                     <UndoRedo />
                     <BoldItalicUnderlineToggles />
-                    <CodeToggle />
                     <ListsToggle />
                     <InsertTable />
                     <BlockTypeSelect />

@@ -13,22 +13,17 @@ const UserMenuDropdown: React.FC = () => {
   const [userInitial, setUserInitial] = useState<string>('П');
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
-  // Получаем данные пользователя из Redux
   const user = useSelector(selectCurrentUser);
 
-  // Генерируем инициалы пользователя
   useEffect(() => {
     if (user?.username) {
-      // Берем первую букву имени
       const initial = user.username.charAt(0).toUpperCase();
       setUserInitial(initial);
     } else if (user?.email) {
-      // Или первую букву email
       const initial = user.email.charAt(0).toUpperCase();
       setUserInitial(initial);
     } else {
-      setUserInitial('П'); // По умолчанию "П" (Профиль)
+      setUserInitial('П');
     }
   }, [user]);
 
@@ -47,9 +42,8 @@ const UserMenuDropdown: React.FC = () => {
   const handleLogout = async () => {
     try {
       await dispatch(logout()).unwrap();
-      // После успешного выхода перенаправляем на главную
       navigate('/');
-      window.location.reload(); // Опционально: для полного сброса состояния
+      window.location.reload();
     } catch (error) {
       console.error('Ошибка при выходе:', error);
     }
@@ -67,7 +61,6 @@ const UserMenuDropdown: React.FC = () => {
     setIsProfilePopupOpen(false);
   };
 
-  // Если пользователь не авторизован, показываем кнопку входа
   if (!user) {
     return (
       <Button type='primary' onClick={() => navigate('/login')}>
@@ -88,11 +81,11 @@ const UserMenuDropdown: React.FC = () => {
 
       <Menu.Item key='my-courses' icon={<StarOutlined />}>
         <Link
-          to='/my-courses-events'
+          to='/my-events'
           style={{ display: 'block', color: 'inherit', textDecoration: 'none' }}
           onClick={e => e.stopPropagation()} // Предотвращаем всплытие
         >
-          Мои курсы и события
+          Мои события
         </Link>
       </Menu.Item>
 
