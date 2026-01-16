@@ -29,8 +29,8 @@ export default function CourseItem(): JSX.Element {
         <div className='course-info'>
           <article className='course-item'>
             <Title>{coursesItem?.name}</Title>
-            <Tag color={'purple'}>{'Онлайн'}</Tag>
-            <Tag color={'blue'}>{'36 часов'}</Tag>
+            {/* <Tag color={'purple'}>{'Онлайн'}</Tag>
+            <Tag color={'blue'}>{'36 часов'}</Tag> */}
             <div className='course-item-content'>
               <Title level={2}>{'Описание курса'}</Title>
               <MdxRenderer content={coursesItem?.description} />
@@ -49,7 +49,9 @@ export default function CourseItem(): JSX.Element {
             </div>
           )}
 
-          <Button text='Записаться' />
+          <a href={coursesItem?.link}>
+            <Button text='Ссылка на курс' />
+          </a>
 
           <Text className='course-cost'>{formatCost(coursesItem?.price)}</Text>
         </div>
