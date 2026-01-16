@@ -81,7 +81,7 @@ const UserMenuDropdown: React.FC = () => {
 
       <Menu.Item key='my-courses' icon={<StarOutlined />}>
         <Link
-          to='/my-courses-events'
+          to='/my-events'
           style={{ display: 'block', color: 'inherit', textDecoration: 'none' }}
           onClick={e => e.stopPropagation()} // Предотвращаем всплытие
         >

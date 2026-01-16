@@ -31,7 +31,7 @@ export default function News(): JSX.Element {
           </Link>
         </div>
       )}
-
+      <div className='courses-title'>Новости Екатеринбургского Дома Учителя</div>
       <div className='next-line-container'>
         {news.map(item => (
           <Link to={`/news/${item.postId}`}>

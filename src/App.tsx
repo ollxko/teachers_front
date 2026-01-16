@@ -125,7 +125,7 @@ function AppContent() {
         <Route path='/profile' element={<RequireAuth>{<div></div>}</RequireAuth>} />
 
         <Route
-          path='/my-courses-events'
+          path='/my-events'
           element={
             <RequireAuth>
               <MyCoursesPage />

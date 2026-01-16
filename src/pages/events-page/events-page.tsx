@@ -37,16 +37,12 @@ export default function Events(): JSX.Element {
   const filteredEvents = useMemo(() => {
     // Если дата не выбрана - показываем все события
     if (!selectedDate) {
-      return [...events].sort((a, b) => 
-        new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
+      return [...events].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }
 
     return events
       .filter(event => event.date.slice(0, 10) === formatDateToYYYYMMDD(selectedDate))
-      .sort((a, b) => 
-        new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [events, selectedDate]);
 
   return (
@@ -60,7 +56,7 @@ export default function Events(): JSX.Element {
           </div>
         )}
         <div className='events-title'>События Екатеринбургского Дома Учителя</div>
-        
+
         <div className='calendar-search'>
           <CalendarSelect
             value={selectedDate}
@@ -83,14 +79,9 @@ export default function Events(): JSX.Element {
           <div className='filter-info'>
             <div>
               Показаны события на дату: <strong>{selectedDate}</strong>
-              <span style={{ marginLeft: '20px' }}>
-                Найдено: {filteredEvents.length}
-              </span>
+              <span style={{ marginLeft: '20px' }}>Найдено: {filteredEvents.length}</span>
             </div>
-            <button 
-              onClick={() => setSelectedDate('')}
-              className='clear-filter-btn'
-            >
+            <button onClick={() => setSelectedDate('')} className='clear-filter-btn'>
               Показать все события
             </button>
           </div>
@@ -112,13 +103,11 @@ export default function Events(): JSX.Element {
             ))
           ) : (
             <div className='no-events-message'>
-              {loading ? (
-                'Загрузка событий...'
-              ) : selectedDate ? (
-                `На ${selectedDate} событий не найдено`
-              ) : (
-                'Событий пока нет'
-              )}
+              {loading
+                ? 'Загрузка событий...'
+                : selectedDate
+                  ? `На ${selectedDate} событий не найдено`
+                  : 'Событий пока нет'}
             </div>
           )}
         </div>

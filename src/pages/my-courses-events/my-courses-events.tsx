@@ -9,6 +9,7 @@ import './my-courses-events.css';
 import EventCard from '../../components/EventCard/EventCard';
 import { formatDate } from '../../utils/dateFormatter';
 import { formatTime } from '../../utils/timeFormatter';
+import Title from 'antd/es/typography/Title';
 
 export default function UserEventsList(): JSX.Element {
   const { events, isLoading, error, refresh, cancelRegistration } = useUserEvents();
@@ -72,7 +73,9 @@ export default function UserEventsList(): JSX.Element {
     <div className='user-events'>
       <div className='user-events-container'>
         <div className='user-events-header'>
-          <h2 className='user-events-title'>Мои события</h2>
+          <Title level={3} className='user-events-title'>
+            Мои события
+          </Title>
         </div>
 
         <div className='user-events-grid'>

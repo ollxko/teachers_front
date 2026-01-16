@@ -32,3 +32,11 @@ Link {
 .courses-grid .ant-card-cover > *{
   border-radius: 6px 6px 0 0 ;
 }
+
+.courses-title{
+  font-size: 25px;
+  padding: 0px 5px 0px 5px;
+  text-align: left;
+  align-self: start;
+
+}

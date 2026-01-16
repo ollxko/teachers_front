@@ -6,7 +6,9 @@ export default function Header(): JSX.Element {
   console.log('Header component rendered');
   return (
     <div className='headerContainer'>
-      <div className='logo'>Дом учителя</div>
+      <Link to={'/news'} className='news'>
+        <div className='logo'>Дом учителя</div>
+      </Link>
       <div className='menu'>
         <Link to={'/news'} className='news'>
           Новости

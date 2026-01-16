@@ -35,6 +35,8 @@ export default function Courses(): JSX.Element {
             </Link>
           </div>
         )}
+        <div className='courses-title'>Курсы Екатеринбургского Дома Учителя</div>
+
         <Search
           className='search'
           placeholder='Введите текст для поиска'

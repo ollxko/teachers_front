@@ -64,7 +64,7 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({
         </div>
 
         <div className='profile-popup-actions'>
-          <Button
+          {/* <Button
             type='primary'
             icon={<EditOutlined />}
             onClick={handleEditData}
@@ -81,7 +81,7 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({
             block
           >
             Поменять пароль
-          </Button>
+          </Button> */}
         </div>
       </div>
     </Modal>
